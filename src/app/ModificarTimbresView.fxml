@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ButtonBar?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.FlowPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane prefHeight="293.0" prefWidth="459.0" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="app.ModificarTimbresController">
+   <children>
+      <BorderPane layoutX="130.0" layoutY="37.0" prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+         <center>
+            <HBox prefHeight="100.0" prefWidth="200.0" scaleShape="false" BorderPane.alignment="CENTER">
+               <children>
+                  <FlowPane alignment="CENTER" columnHalignment="CENTER" orientation="VERTICAL" prefHeight="293.0" prefWidth="225.0">
+                     <children>
+                        <Label text="Nombre">
+                           <FlowPane.margin>
+                              <Insets bottom="50.0" />
+                           </FlowPane.margin>
+                           <font>
+                              <Font size="24.0" />
+                           </font>
+                        </Label>
+                        <Label text="IP">
+                           <font>
+                              <Font size="24.0" />
+                           </font>
+                        </Label>
+                     </children>
+                  </FlowPane>
+                  <FlowPane alignment="CENTER" orientation="VERTICAL" prefHeight="293.0" prefWidth="233.0">
+                     <children>
+                        <TextField id="txtNombre" fx:id="txtNombre">
+                           <FlowPane.margin>
+                              <Insets bottom="50.0" />
+                           </FlowPane.margin>
+                        </TextField>
+                        <TextField id="txtIP" fx:id="txtIP">
+                           <FlowPane.margin>
+                              <Insets />
+                           </FlowPane.margin>
+                        </TextField>
+                     </children>
+                  </FlowPane>
+               </children>
+            </HBox>
+         </center>
+         <top>
+            <Label text="Ingrese el nuevo timbre" BorderPane.alignment="CENTER">
+               <BorderPane.margin>
+                  <Insets top="10.0" />
+               </BorderPane.margin>
+               <font>
+                  <Font size="25.0" />
+               </font>
+            </Label>
+         </top>
+         <bottom>
+            <ButtonBar nodeOrientation="LEFT_TO_RIGHT" prefHeight="40.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+              <buttons>
+                <Button mnemonicParsing="false" prefHeight="25.0" prefWidth="223.0" text="Cancelar" />
+                  <Button fx:id="btnAgregar" mnemonicParsing="false" onAction="#agregarTimbre" text="Agregar" />
+              </buttons>
+               <BorderPane.margin>
+                  <Insets right="10.0" />
+               </BorderPane.margin>
+            </ButtonBar>
+         </bottom>
+      </BorderPane>
+   </children>
+</AnchorPane>
