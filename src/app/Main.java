@@ -8,6 +8,8 @@ import javafx.stage.Stage;
 
 public class Main extends Application {
 
+    private MainController mainController;
+
     public static void main(String[] args) {
         launch(args);
     }
@@ -18,6 +20,5 @@ public class Main extends Application {
         primaryStage.setTitle("Timbre");
         primaryStage.setScene(new Scene(root));
         primaryStage.show();
-
     }
 }

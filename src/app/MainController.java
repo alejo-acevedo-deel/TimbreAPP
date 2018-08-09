@@ -34,28 +34,32 @@ public class MainController implements Receptores{
 
    private MisHorarios listaHorarios = new MisHorarios();
 
+   private AgregarHorariosController agregarHorariosController;
 
    public void initialize(){
        actualizarComboTimbres();
-       actualizarListaView(listaSubir);
+       actualizarListaView(this.listaSubir);
    }
 
    public void actualizarComboTimbres(){
-       listaTimbres.cargarDesdeCSV();
-       comboTimbres.getItems().clear();
-       comboTimbres.getItems().addAll(listaTimbres.obtenerTimbres());
+       this.listaTimbres.cargarDesdeCSV();
+       this.comboTimbres.getItems().clear();
+       this.comboTimbres.getItems().addAll(this.listaTimbres.obtenerTimbres());
    }
 
    public void actualizarListaView(ListView<Horario> listaView){
-       listaHorarios.cargarDesdeCSV();
+       this.listaHorarios.cargarDesdeCSV();
        listaView.getItems().clear();
        listaView.getItems().addAll(listaHorarios.obtenerTimbres());
    }
 
 
    public void agregarHorarios(ActionEvent actionEvent) throws Exception{
+       agregarHorariosController = new AgregarHorariosController(listaHorarios);
        Stage agregarTimbreStage = new Stage();
-       Parent root = FXMLLoader.load(getClass().getResource("AgregarHorariosView.fxml"));
+       FXMLLoader loader = new FXMLLoader(getClass().getResource("AgregarHorariosView.fxml"));
+       loader.setController(agregarHorariosController);
+       Parent root = loader.load();
        agregarTimbreStage.setTitle("Agregar Horarios");
        agregarTimbreStage.setScene(new Scene(root));
        agregarTimbreStage.show();
@@ -68,8 +72,8 @@ public class MainController implements Receptores{
    }
 
    public void borrarHorarios(ActionEvent actionEvent) throws Exception{
-       List<Horario> horarios = listaSubir.getSelectionModel().getSelectedItems();
-       listaHorarios.borrar(horarios);
+       List<Horario> horarios = this.listaSubir.getSelectionModel().getSelectedItems();
+       this.listaHorarios.borrar(horarios);
    }
 
    public void modificarTimbres(ActionEvent actionEvent) throws Exception{
@@ -88,12 +92,12 @@ public class MainController implements Receptores{
 
    public void conectarTimbre(){
        try {
-       if(timbreSeleccionado != null){
-           timbreSeleccionado.desconectar();
+           if(this.timbreSeleccionado != null){
+                this.timbreSeleccionado.desconectar();
        }
-       timbreSeleccionado = comboTimbres.getSelectionModel().getSelectedItem();
-       timbreSeleccionado.conectar();
-       timbreSeleccionado.setearReceptor(this);
+       this.timbreSeleccionado = this.comboTimbres.getSelectionModel().getSelectedItem();
+       this.timbreSeleccionado.conectar();
+       this.timbreSeleccionado.setearReceptor(this);
        }catch (IOException e){
            System.out.println(e.getMessage());
            System.out.println("No se pudo Conectar/Desconectar");
@@ -107,7 +111,7 @@ public class MainController implements Receptores{
 
     public void enviarHorarios(){
        try{
-           timbreSeleccionado.enviar("Hola Manola\n");
+           this.timbreSeleccionado.enviar("Hola Manola\n");
        }catch(IOException e){
            Alert alert = new Alert(Alert.AlertType.ERROR);
            alert.setTitle("ERROR DE CONEXION");

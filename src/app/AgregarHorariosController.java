@@ -2,8 +2,12 @@ package app;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.TextField;
+import javafx.stage.Stage;
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVPrinter;
 
@@ -16,6 +20,7 @@ import java.nio.file.StandardOpenOption;
 
 public class AgregarHorariosController {
 
+    private  MisHorarios listaHorarios;
     @FXML
     TextField txtHora;
     @FXML
@@ -30,7 +35,11 @@ public class AgregarHorariosController {
     private CSVPrinter csvPrinter;
     private BufferedWriter writer;
 
-    public void initialize() throws IOException {
+    public AgregarHorariosController(MisHorarios listaHorarios){
+        this.listaHorarios = listaHorarios;
+    }
+
+    public void initialize() throws IOException{
         try{
             this.writer = Files.newBufferedWriter(Paths.get(this.CSV_FILE), StandardOpenOption.APPEND);
             this.csvPrinter = new CSVPrinter(writer, CSVFormat.DEFAULT);
