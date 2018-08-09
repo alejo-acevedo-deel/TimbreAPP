@@ -3,7 +3,11 @@ package app;
 import com.sun.xml.internal.ws.policy.privateutil.PolicyUtils;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.TextField;
+import javafx.stage.Stage;
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVPrinter;
 
@@ -21,28 +25,24 @@ public class ModificarTimbresController {
     TextField txtIP;
 
     private static final String CSV_FILE = "Timbres.csv";
-    private CSVPrinter csvPrinter;
-    private BufferedWriter writer;
+    private MisTimbres misTimbres;
+
+    public ModificarTimbresController(MisTimbres misTimbres, Stage modificarTimbresStage) throws IOException{
+        this.misTimbres = misTimbres;
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("ModificarTimbresView.fxml"));
+        loader.setController(this);
+        Parent root = loader.load();
+        modificarTimbresStage.setTitle("Modificar Timbres");
+        modificarTimbresStage.setScene(new Scene(root));
+        modificarTimbresStage.show();
+    }
 
     public void initialize() throws  IOException{
-        try{
-            this.writer = Files.newBufferedWriter(Paths.get(this.CSV_FILE), StandardOpenOption.APPEND);
-            this.csvPrinter = new CSVPrinter(writer, CSVFormat.DEFAULT);
-        }catch (NoSuchFileException e) {
-            this.writer = Files.newBufferedWriter(Paths.get(CSV_FILE));
-            this.csvPrinter = new CSVPrinter(writer, CSVFormat.DEFAULT.withHeader("Nombre", "IP"));
-        }
     }
 
     public void agregarTimbre(ActionEvent actionEvent) throws IOException{
         String nombre = txtNombre.getText();
         String IP = txtIP.getText();
-        this.csvPrinter.printRecord(nombre,IP);
-        this.csvPrinter.flush();
+        this.misTimbres.agregarTimbre(nombre, IP);
     }
-
-    public void close() throws IOException{
-        this.csvPrinter.flush();
-    }
-
 }

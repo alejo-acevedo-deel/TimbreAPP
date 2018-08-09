@@ -20,7 +20,8 @@ import java.nio.file.StandardOpenOption;
 
 public class AgregarHorariosController {
 
-    private  MisHorarios listaHorarios;
+    private MisHorarios misHorarios;
+
     @FXML
     TextField txtHora;
     @FXML
@@ -32,33 +33,25 @@ public class AgregarHorariosController {
 
 
     private static final String CSV_FILE = "Horarios.csv";
-    private CSVPrinter csvPrinter;
-    private BufferedWriter writer;
 
-    public AgregarHorariosController(MisHorarios listaHorarios){
-        this.listaHorarios = listaHorarios;
+    public AgregarHorariosController(MisHorarios misHorarios, Stage agregarHorariosStage) throws IOException{
+        this.misHorarios = misHorarios;
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("AgregarHorariosView.fxml"));
+        loader.setController(this);
+        Parent root = loader.load();
+        agregarHorariosStage.setTitle("Agregar Horarios");
+        agregarHorariosStage.setScene(new Scene(root));
+        agregarHorariosStage.show();
     }
 
     public void initialize() throws IOException{
-        try{
-            this.writer = Files.newBufferedWriter(Paths.get(this.CSV_FILE), StandardOpenOption.APPEND);
-            this.csvPrinter = new CSVPrinter(writer, CSVFormat.DEFAULT);
-        }catch (NoSuchFileException e) {
-            this.writer = Files.newBufferedWriter(Paths.get(CSV_FILE));
-            this.csvPrinter = new CSVPrinter(writer, CSVFormat.DEFAULT.withHeader("Hora", "Minutos","Largo"));
-        }
     }
 
     public void agregarHorarios(ActionEvent actionEvent) throws IOException{
         String hora = txtHora.getText();
         String minutos = txtMinutos.getText();
         boolean largo = radioLargo.isSelected();
-        this.csvPrinter.printRecord(hora,minutos, largo);
-        this.csvPrinter.flush();
-    }
-
-    public void close() throws IOException{
-        this.csvPrinter.flush();
+        misHorarios.agregarHorario(hora, minutos, largo);
     }
 
     public void unsetLargo(){

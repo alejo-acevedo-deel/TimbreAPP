@@ -29,41 +29,39 @@ public class MainController implements Receptores{
    @FXML
    ComboBox<Timbre> comboTimbres;
 
-   private MisTimbres listaTimbres = new MisTimbres();
+   private MisTimbres listaTimbres = new MisTimbres(this);
    private Timbre timbreSeleccionado;
 
-   private MisHorarios listaHorarios = new MisHorarios();
+   private MisHorarios listaHorarios = new MisHorarios(this);;
 
    private AgregarHorariosController agregarHorariosController;
+   private ModificarTimbresController modificarTimbresController;
 
-   public void initialize(){
+   public MainController(Stage primaryStage) throws Exception{
+       FXMLLoader loader = new FXMLLoader(getClass().getResource("MainView.fxml"));
+       loader.setController(this);
+       Parent root = loader.load();
+       primaryStage.setTitle("Timbre");
+       primaryStage.setScene(new Scene(root));
+       primaryStage.show();
        actualizarComboTimbres();
        actualizarListaView(this.listaSubir);
    }
 
    public void actualizarComboTimbres(){
-       this.listaTimbres.cargarDesdeCSV();
        this.comboTimbres.getItems().clear();
        this.comboTimbres.getItems().addAll(this.listaTimbres.obtenerTimbres());
    }
 
    public void actualizarListaView(ListView<Horario> listaView){
-       this.listaHorarios.cargarDesdeCSV();
        listaView.getItems().clear();
-       listaView.getItems().addAll(listaHorarios.obtenerTimbres());
+       listaView.getItems().addAll(listaHorarios.obtenerHorarios());
    }
 
-
    public void agregarHorarios(ActionEvent actionEvent) throws Exception{
-       agregarHorariosController = new AgregarHorariosController(listaHorarios);
-       Stage agregarTimbreStage = new Stage();
-       FXMLLoader loader = new FXMLLoader(getClass().getResource("AgregarHorariosView.fxml"));
-       loader.setController(agregarHorariosController);
-       Parent root = loader.load();
-       agregarTimbreStage.setTitle("Agregar Horarios");
-       agregarTimbreStage.setScene(new Scene(root));
-       agregarTimbreStage.show();
-       agregarTimbreStage.setOnCloseRequest(new EventHandler<WindowEvent>() {
+       Stage agregarHorariosStage = new Stage();
+       this.agregarHorariosController = new AgregarHorariosController(this.listaHorarios, agregarHorariosStage);
+       agregarHorariosStage.setOnCloseRequest(new EventHandler<WindowEvent>() {
            @Override
            public void handle(WindowEvent event) {
                actualizarListaView(listaSubir);
@@ -73,16 +71,13 @@ public class MainController implements Receptores{
 
    public void borrarHorarios(ActionEvent actionEvent) throws Exception{
        List<Horario> horarios = this.listaSubir.getSelectionModel().getSelectedItems();
-       this.listaHorarios.borrar(horarios);
+       this.listaHorarios.borrarHorario(horarios);
    }
 
    public void modificarTimbres(ActionEvent actionEvent) throws Exception{
-       Stage modificarTimbreStage = new Stage();
-       Parent root = FXMLLoader.load(getClass().getResource("ModificarTimbresView.fxml"));
-       modificarTimbreStage.setTitle("Modificar Timbres");
-       modificarTimbreStage.setScene(new Scene(root));
-       modificarTimbreStage.show();
-       modificarTimbreStage.setOnCloseRequest(new EventHandler<WindowEvent>() {
+       Stage modificarTimbresStage = new Stage();
+       this.modificarTimbresController = new ModificarTimbresController(this.listaTimbres, modificarTimbresStage);
+       modificarTimbresStage.setOnCloseRequest(new EventHandler<WindowEvent>() {
            @Override
            public void handle(WindowEvent event) {
                actualizarComboTimbres();
@@ -107,6 +102,16 @@ public class MainController implements Receptores{
     @Override
     public void llegoUnMensaje(String mensaje) {
         System.out.println(mensaje);
+    }
+
+    @Override
+    public void agregaronUnTimbre() {
+        actualizarComboTimbres();
+    }
+
+    @Override
+    public void agregaronUnHorario() {
+        actualizarListaView(listaSubir);
     }
 
     public void enviarHorarios(){

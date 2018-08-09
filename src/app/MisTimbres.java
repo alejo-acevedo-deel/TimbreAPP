@@ -18,8 +18,21 @@ public class MisTimbres {
 
     private List<Timbre> timbres = new ArrayList<Timbre>();
 
-    public MisTimbres(){ }
+    Receptores receptor;
+
+    public MisTimbres(Receptores receptor){
+        this.receptor = receptor;
+        this.cargarDesdeCSV();
+    }
+
+
     public void agregarTimbre(String nombre, String ip){
+        Timbre timbre = new Timbre(nombre, ip);
+        this.timbres.add(timbre);
+        receptor.agregaronUnTimbre();
+    }
+
+    private void agregarTimbreSil(String nombre, String ip){
         Timbre timbre = new Timbre(nombre, ip);
         this.timbres.add(timbre);
     }
@@ -33,7 +46,7 @@ public class MisTimbres {
         return timbres.listIterator();
     }
 
-    public void cargarDesdeCSV(){
+    private void cargarDesdeCSV(){
         this.timbres.clear();
         try {
             Reader reader = Files.newBufferedReader(Paths.get(CSV_FILE));
@@ -41,7 +54,7 @@ public class MisTimbres {
             for(CSVRecord csvRecord : csvParser){
                 String nombre = csvRecord.get("Nombre");
                 String ip = csvRecord.get("IP");
-                this.agregarTimbre(nombre,ip);
+                this.agregarTimbreSil(nombre,ip);
             }
         }catch (IOException e){
         }

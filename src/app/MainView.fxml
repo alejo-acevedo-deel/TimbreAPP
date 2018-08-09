@@ -14,7 +14,7 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="684.0" prefWidth="1359.0" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="app.MainController">
+<AnchorPane prefHeight="684.0" prefWidth="1359.0" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1">
    <children>
       <TabPane layoutX="237.0" layoutY="321.0" prefHeight="200.0" prefWidth="1332.0" tabClosingPolicy="UNAVAILABLE" tabMaxHeight="100.0" tabMaxWidth="100.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
         <tabs>

@@ -17,14 +17,25 @@ public class MisHorarios {
     private static final String CSV_FILE = "Horarios.csv";
 
     private List<Horario> horarios = new ArrayList<Horario>();
+    private Receptores receptor;
 
-    public MisHorarios(){ }
-    public void agregarTimbre(String hora, String minutos, boolean largo){
+    public MisHorarios(Receptores receptor){
+        this.receptor = receptor;
+        this.cargarDesdeCSV();
+    }
+
+    public void agregarHorario(String hora, String minutos, boolean largo){
+        Horario horario = new Horario(hora, minutos, largo);
+        this.horarios.add(horario);
+        receptor.agregaronUnHorario();
+    }
+
+    private void agregarHorarioSil(String hora, String minutos, boolean largo){
         Horario horario = new Horario(hora, minutos, largo);
         this.horarios.add(horario);
     }
 
-    public List<Horario> obtenerTimbres() {
+    public List<Horario> obtenerHorarios() {
         return horarios;
     }
 
@@ -33,7 +44,7 @@ public class MisHorarios {
         return horarios.listIterator();
     }
 
-    public void cargarDesdeCSV(){
+    private void cargarDesdeCSV(){
         this.horarios.clear();
         try {
             Reader reader = Files.newBufferedReader(Paths.get(CSV_FILE));
@@ -42,14 +53,18 @@ public class MisHorarios {
                 String hora = csvRecord.get("Hora");
                 String minutos = csvRecord.get("Minutos");
                 boolean largo = csvRecord.get("Largo").equals("true");
-                this.agregarTimbre(hora,minutos,largo);
+                this.agregarHorarioSil(hora,minutos,largo);
             }
         }catch (IOException e){
         }
     }
 
-    public void borrar(List<Horario> horarios) {
+    public void borrarHorario(List<Horario> horarios) {
         this.horarios.removeAll(horarios);
-
     }
+
+    public void settearReceptor(Receptores receptor){
+        this.receptor = receptor;
+    }
+
 }
