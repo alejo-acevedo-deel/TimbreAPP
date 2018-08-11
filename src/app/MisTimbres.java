@@ -48,15 +48,6 @@ public class MisTimbres {
 
     private void cargarDesdeCSV(){
         this.timbres.clear();
-        try {
-            Reader reader = Files.newBufferedReader(Paths.get(CSV_FILE));
-            CSVParser csvParser = new CSVParser(reader, CSVFormat.DEFAULT.withHeader("Nombre","IP").withIgnoreHeaderCase().withSkipHeaderRecord().withTrim());
-            for(CSVRecord csvRecord : csvParser){
-                String nombre = csvRecord.get("Nombre");
-                String ip = csvRecord.get("IP");
-                this.agregarTimbreSil(nombre,ip);
-            }
-        }catch (IOException e){
-        }
+
     }
 }

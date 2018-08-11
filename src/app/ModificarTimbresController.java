@@ -27,7 +27,8 @@ public class ModificarTimbresController {
     private static final String CSV_FILE = "Timbres.csv";
     private MisTimbres misTimbres;
 
-    public ModificarTimbresController(MisTimbres misTimbres, Stage modificarTimbresStage) throws IOException{
+    public ModificarTimbresController(MisTimbres misTimbres) throws IOException{
+        Stage modificarTimbresStage = new Stage();
         this.misTimbres = misTimbres;
         FXMLLoader loader = new FXMLLoader(getClass().getResource("ModificarTimbresView.fxml"));
         loader.setController(this);
@@ -37,8 +38,6 @@ public class ModificarTimbresController {
         modificarTimbresStage.show();
     }
 
-    public void initialize() throws  IOException{
-    }
 
     public void agregarTimbre(ActionEvent actionEvent) throws IOException{
         String nombre = txtNombre.getText();

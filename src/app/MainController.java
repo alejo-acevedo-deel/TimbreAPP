@@ -59,14 +59,7 @@ public class MainController implements Receptores{
    }
 
    public void agregarHorarios(ActionEvent actionEvent) throws Exception{
-       Stage agregarHorariosStage = new Stage();
-       this.agregarHorariosController = new AgregarHorariosController(this.listaHorarios, agregarHorariosStage);
-       agregarHorariosStage.setOnCloseRequest(new EventHandler<WindowEvent>() {
-           @Override
-           public void handle(WindowEvent event) {
-               actualizarListaView(listaSubir);
-           }
-       });
+       this.agregarHorariosController = new AgregarHorariosController(this.listaHorarios);
    }
 
    public void borrarHorarios(ActionEvent actionEvent) throws Exception{
@@ -75,14 +68,7 @@ public class MainController implements Receptores{
    }
 
    public void modificarTimbres(ActionEvent actionEvent) throws Exception{
-       Stage modificarTimbresStage = new Stage();
-       this.modificarTimbresController = new ModificarTimbresController(this.listaTimbres, modificarTimbresStage);
-       modificarTimbresStage.setOnCloseRequest(new EventHandler<WindowEvent>() {
-           @Override
-           public void handle(WindowEvent event) {
-               actualizarComboTimbres();
-           }
-       });
+       this.modificarTimbresController = new ModificarTimbresController(this.listaTimbres);
    }
 
    public void conectarTimbre(){
