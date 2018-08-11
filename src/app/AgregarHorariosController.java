@@ -34,7 +34,8 @@ public class AgregarHorariosController {
 
     private static final String CSV_FILE = "Horarios.csv";
 
-    public AgregarHorariosController(MisHorarios misHorarios, Stage agregarHorariosStage) throws IOException{
+    public AgregarHorariosController(MisHorarios misHorarios) throws IOException{
+        Stage agregarHorariosStage = new Stage();
         this.misHorarios = misHorarios;
         FXMLLoader loader = new FXMLLoader(getClass().getResource("AgregarHorariosView.fxml"));
         loader.setController(this);
@@ -42,9 +43,6 @@ public class AgregarHorariosController {
         agregarHorariosStage.setTitle("Agregar Horarios");
         agregarHorariosStage.setScene(new Scene(root));
         agregarHorariosStage.show();
-    }
-
-    public void initialize() throws IOException{
     }
 
     public void agregarHorarios(ActionEvent actionEvent) throws IOException{
