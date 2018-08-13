@@ -4,8 +4,10 @@ import Exceciones.InformacionDifiereDeHeaderException;
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVParser;
 
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.Reader;
+import java.io.Writer;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
@@ -13,12 +15,15 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
+
 public class CSV {
     private Reader reader;
     private CSVParser csvParser;
+    private FileWriter Writer;
     void CSV(String ruta,ArrayList<String> header) throws IOException {
         this.reader = Files.newBufferedReader(Paths.get(ruta));
-        CSVParser csvParser = new CSVParser(reader, CSVFormat.DEFAULT.withHeader(String.valueOf(header)).withIgnoreHeaderCase().withSkipHeaderRecord().withTrim());
+        this.Writer = new FileWriter(ruta, true);
+        this.csvParser = new CSVParser(reader, CSVFormat.DEFAULT.withHeader(String.valueOf(header)).withIgnoreHeaderCase().withSkipHeaderRecord().withTrim());
     }
 
     public List<String> verEncabezado() throws IOException {
@@ -28,8 +33,12 @@ public class CSV {
         return lista_encabezado;
     }
 
-    public void agregarAlCSV(LinkedList<String> nueva_informacion)throws InformacionDifiereDeHeaderException {
+    public void agregarAlCSV(String nueva_informacion) throws InformacionDifiereDeHeaderException, IOException {
         //LA LISTA DEBE ESTAR EN EL ORDEN DEL HEADER. Y POSEER LA MISMA CANTIDAD DE ITEMS.
+
+        //Falta testear el header !!!!!! CAREFUL !!!!!!
+        //ALEJO BOTON
+        this.Writer.append(nueva_informacion);
     }
 
     public boolean borrarDelCSV(LinkedList<String> info_a_borrar) throws InformacionDifiereDeHeaderException{
