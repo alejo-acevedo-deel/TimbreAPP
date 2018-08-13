@@ -1,6 +1,6 @@
 package app;
 
-import Exceciones.InformacionDifiereDeHeaderException;
+import Excepciones.InformacionDifiereDeHeaderException;
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVParser;
 

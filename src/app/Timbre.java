@@ -59,4 +59,8 @@ public class Timbre{
         return this.obtenerNombre();
     }
 
+    public String joiner(){
+        return this.nombre + "," + this.ip;
+    }
+
 }
