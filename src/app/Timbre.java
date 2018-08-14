@@ -1,5 +1,8 @@
 package app;
 
+import Excepciones.FaltaIP;
+import Excepciones.FaltaNombre;
+
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.Socket;
@@ -12,17 +15,22 @@ public class Timbre{
     private static int PUERTO = 4000;
     private TCPClient cliente;
 
-    public Timbre(String nombre, String ip){
-        this.nombre = nombre;
-        this.ip = ip;
-
+    public Timbre(String nombre, String ip) throws FaltaNombre, FaltaIP{
+        this.setearNombre(nombre);
+        this.setearIp(ip);
     }
 
-    public void setearNombre(String nombre){
+    public void setearNombre(String nombre) throws FaltaNombre{
+        if(nombre.isEmpty()){
+            throw new FaltaNombre();
+        }
         this.nombre = nombre;
     }
 
-    public void setearIp(String ip){
+    public void setearIp(String ip)throws FaltaIP{
+        if(ip.isEmpty()){
+            throw new FaltaIP();
+        }
         this.ip = ip;
     }
 

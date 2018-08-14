@@ -151,6 +151,67 @@
                   </AnchorPane>
             </content>
           </Tab>
+            <Tab text="Borrar Timbre">
+              <content>
+                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                     <children>
+                        <BorderPane prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                           <center>
+                              <HBox prefHeight="173.0" prefWidth="380.0" scaleShape="false" BorderPane.alignment="CENTER">
+                                 <children>
+                                    <FlowPane alignment="CENTER" columnHalignment="CENTER" orientation="VERTICAL" prefHeight="293.0" prefWidth="225.0">
+                                       <children>
+                                          <Label text="Nombre">
+                                             <FlowPane.margin>
+                                                <Insets bottom="50.0" />
+                                             </FlowPane.margin>
+                                             <font>
+                                                <Font size="24.0" />
+                                             </font>
+                                          </Label>
+                                          <Label text="IP">
+                                             <font>
+                                                <Font size="24.0" />
+                                             </font>
+                                          </Label>
+                                       </children>
+                                    </FlowPane>
+                                    <FlowPane alignment="CENTER" orientation="VERTICAL" prefHeight="293.0" prefWidth="233.0">
+                                       <children>
+                                          <Label fx:id="lblNombreBorrar">
+                                             <FlowPane.margin>
+                                                <Insets bottom="50.0" />
+                                             </FlowPane.margin>
+                                          </Label>
+                                          <Label fx:id="lblIPBorrar" />
+                                       </children>
+                                    </FlowPane>
+                                 </children>
+                              </HBox>
+                           </center>
+                           <bottom>
+                              <ButtonBar nodeOrientation="LEFT_TO_RIGHT" prefHeight="40.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+                                 <buttons>
+                                    <Button mnemonicParsing="false" prefHeight="25.0" prefWidth="223.0" text="Cancelar" />
+                                    <Button fx:id="btnBorrarTimbre" mnemonicParsing="false" onAction="#borrarTimbre" text="Borrar" />
+                                 </buttons>
+                                 <BorderPane.margin>
+                                    <Insets right="10.0" />
+                                 </BorderPane.margin>
+                              </ButtonBar>
+                           </bottom>
+                           <top>
+                              <ComboBox fx:id="comboTimbreBorrar" onAction="#timbreSeleccionadoBorrar" prefHeight="27.0" prefWidth="406.0" BorderPane.alignment="CENTER">
+                                 <BorderPane.margin>
+                                    <Insets left="10.0" right="10.0" top="20.0" />
+                                 </BorderPane.margin>
+                              </ComboBox>
+                           </top>
+                        </BorderPane>
+                     </children>
+                  </AnchorPane>
+              </content>
+            </Tab>
         </tabs>
       </TabPane>
    </children>

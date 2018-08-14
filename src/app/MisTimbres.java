@@ -1,5 +1,7 @@
 package app;
 
+import Excepciones.FaltaIP;
+import Excepciones.FaltaNombre;
 import Excepciones.IpYaExiste;
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVParser;
@@ -27,14 +29,14 @@ public class MisTimbres {
     }
 
 
-    public void agregarTimbre(String nombre, String ip) throws IpYaExiste{
+    public void agregarTimbre(String nombre, String ip) throws IpYaExiste, FaltaNombre, FaltaIP{
         this.chequearIps(ip);
         Timbre timbre = new Timbre(nombre, ip);
         this.timbres.add(timbre);
         this.receptor.agregaronUnTimbre();
     }
 
-    private void agregarTimbreSil(String nombre, String ip){
+    private void agregarTimbreSil(String nombre, String ip)throws FaltaNombre, FaltaIP{
         Timbre timbre = new Timbre(nombre, ip);
         this.timbres.add(timbre);
     }
@@ -59,5 +61,9 @@ public class MisTimbres {
                 throw new IpYaExiste();
             }
         }
+    }
+
+    public void borrarTimbre(Timbre timbre){
+        this.timbres.remove(timbre);
     }
 }
