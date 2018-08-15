@@ -99,7 +99,7 @@
                            <top>
                               <FlowPane alignment="CENTER" columnHalignment="CENTER" prefHeight="40.0" prefWidth="1359.0" BorderPane.alignment="CENTER">
                                  <children>
-                                    <ComboBox id="comboTimbres" fx:id="comboTimbres" prefHeight="27.0" prefWidth="394.0" promptText="Eliga Un Timbre" />
+                                    <ComboBox id="comboTimbres" fx:id="comboTimbres" onAction="#conectarTimbre" prefHeight="27.0" prefWidth="394.0" promptText="Eliga Un Timbre" />
                                     <Button fx:id="btnModificarTimbres" mnemonicParsing="false" onAction="#modificarTimbres" text="+/-">
                                        <FlowPane.margin>
                                           <Insets left="10.0" />

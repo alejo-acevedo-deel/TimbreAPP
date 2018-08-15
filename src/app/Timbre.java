@@ -1,7 +1,9 @@
 package app;
 
+import Excepciones.EstaDesconectado;
 import Excepciones.FaltaIP;
 import Excepciones.FaltaNombre;
+import Excepciones.NoSeConecto;
 
 import java.io.IOException;
 import java.net.MalformedURLException;
@@ -18,6 +20,7 @@ public class Timbre{
     public Timbre(String nombre, String ip) throws FaltaNombre, FaltaIP{
         this.setearNombre(nombre);
         this.setearIp(ip);
+        this.cliente = new TCPClient(ip, PUERTO);
     }
 
     public void setearNombre(String nombre) throws FaltaNombre{
@@ -42,20 +45,35 @@ public class Timbre{
         return nombre;
     }
 
-    public void conectar()throws IOException{
-        cliente = new TCPClient(this.ip, this.PUERTO);
-        cliente.start();
+    public void conectar()throws NoSeConecto{
+        try {
+            this.cliente.conectar();
+            this.cliente.start();
+        } catch (IOException e) {
+            throw new NoSeConecto();
+        }
     }
 
-    public void desconectar()throws IOException {
-        this.cliente.desconectar();
-
+    public void desconectar()throws EstaDesconectado{
+        try {
+            this.cliente.desconectar();
+        } catch (IOException e) {
+            throw  new EstaDesconectado();
+        }
     }
-    public void enviar(String mensaje)throws IOException{
-        this.cliente.enviar(mensaje);
+    public void enviar(String mensaje)throws EstaDesconectado{
+        try {
+            this.cliente.enviar(mensaje);
+        } catch (IOException e) {
+            throw new EstaDesconectado();
+        }
     }
 
-    public void setearReceptor(MainController receptor) {
+    public boolean estaConectado(){
+        return this.cliente.estaConectado();
+    }
+
+    public void setearReceptor(Receptores receptor) {
         this.cliente.setearReceptor(receptor);
     }
 

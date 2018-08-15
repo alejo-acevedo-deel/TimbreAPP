@@ -68,12 +68,12 @@ public class ModificarTimbresController {
             this.misTimbres.agregarTimbre(nombre, IP);
             txtNombreAgregar.setText("");
             txtIPAgregar.setText("");
-        }catch (IpYaExiste e){
-            this.mostrarAlerta(e);
-        }catch (FaltaIP m){
-            this.mostrarAlerta(m);
-        }catch (FaltaNombre n) {
-            this.mostrarAlerta(n);
+        }catch (IpYaExiste ipYaExiste){
+            new Alerta(ipYaExiste);
+        }catch (FaltaIP faltaIP){
+            new Alerta(faltaIP);
+        }catch (FaltaNombre faltaNombre) {
+            new Alerta(faltaNombre);
         }
         this.actualizarComboBox();
     }
@@ -85,12 +85,12 @@ public class ModificarTimbresController {
             this.misTimbres.chequearIps(IP);
             this.timbreModificar.setearIp(IP);
             this.timbreModificar.setearNombre(nombre);
-        }catch (IpYaExiste e){
-            this.mostrarAlerta(e);
-        }catch (FaltaIP m){
-            mostrarAlerta(m);
-        }catch (FaltaNombre n){
-            mostrarAlerta(n);
+        }catch (IpYaExiste ipYaExiste){
+            new Alerta(ipYaExiste);
+        }catch (FaltaIP faltaIP){
+            new Alerta(faltaIP);
+        }catch (FaltaNombre faltaNombre){
+            new Alerta(faltaNombre);
         }
         this.actualizarComboBox();
     }
@@ -131,10 +131,4 @@ public class ModificarTimbresController {
     }
 
 
-    private void mostrarAlerta(Exception e){
-        Alert alert = new Alert(Alert.AlertType.ERROR);
-        alert.setTitle("Error");
-        alert.setContentText(e.getMessage());
-        alert.showAndWait();
-    }
 }
