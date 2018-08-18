@@ -69,6 +69,5 @@ public class CSVTest {
         assertEquals("Alejo",lectura.get(0).get(header[0]));
         assertEquals("Acevedo",lectura.get(0).get(header[1]));
         assertEquals("22",lectura.get(0).get(header[2]));
-
     }
 }

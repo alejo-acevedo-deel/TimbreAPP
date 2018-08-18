@@ -7,10 +7,7 @@ import org.apache.commons.csv.CSVParser;
 import org.apache.commons.csv.CSVPrinter;
 import org.apache.commons.csv.CSVRecord;
 
-import java.io.FileWriter;
-import java.io.IOException;
-import java.io.Reader;
-import java.io.Writer;
+import java.io.*;
 import java.nio.file.*;
 import java.util.*;
 
@@ -32,21 +29,22 @@ public class CSV {
         }catch (FileAlreadyExistsException e){
             abrirCSV();
         }
-        this.reader = Files.newBufferedReader(Paths.get(ruta));
-        this.csvParser = new CSVParser(reader, CSVFormat.DEFAULT.withHeader(header).withIgnoreHeaderCase().withSkipHeaderRecord().withTrim());
+
     }
 
     private void abrirCSV()throws IOException{
         this.writer = Files.newBufferedWriter(Paths.get(ruta), StandardOpenOption.APPEND);
         this.csvPrinter = new CSVPrinter(writer, CSVFormat.DEFAULT.withHeader(header).withSkipHeaderRecord());
-
-
     }
 
     private void crearCSV()throws IOException{
         this.writer = Files.newBufferedWriter(Paths.get(ruta), StandardOpenOption.CREATE_NEW);
         this.csvPrinter = new CSVPrinter(writer, CSVFormat.DEFAULT.withHeader(header));
+    }
 
+    private void abrirLecturaCSV()throws IOException{
+        this.reader = Files.newBufferedReader(Paths.get(ruta));
+        this.csvParser = new CSVParser(reader, CSVFormat.DEFAULT.withHeader(header).withIgnoreHeaderCase().withSkipHeaderRecord().withTrim());
     }
 
     public List<String> verEncabezado() throws IOException {
@@ -56,19 +54,49 @@ public class CSV {
         return lista_encabezado;
     }
 
-    public void agregarAlCSV(List nueva_informacion) throws InformacionDifiereDeHeaderException, IOException {
+    public void agregarAlCSV(HashMap<String, String> nueva_informacion) throws InformacionDifiereDeHeaderException, IOException {
         //LA LISTA DEBE ESTAR EN EL ORDEN DEL HEADER. Y POSEER LA MISMA CANTIDAD DE ITEMS.
+        //DEVUELVO EL NUMERO DE LINEA AGREGADA
+        LinkedList<String> aux = new LinkedList<String>();
         if(nueva_informacion.size() != this.header.length){
             throw new InformacionDifiereDeHeaderException();
+        }
+        for (String key : header){
+            aux.add(nueva_informacion.get(key));
         }
         this.csvPrinter.printRecord(nueva_informacion);
         this.csvPrinter.flush();
     }
 
-    public boolean borrarDelCSV(LinkedList<String> info_a_borrar) throws InformacionDifiereDeHeaderException{
+    public void agregarTodoAlCSV(LinkedList<HashMap<String,String>> nueva_informacion) throws InformacionDifiereDeHeaderException, IOException{
+        //LAS CLAVES DEL DICCIONARIO DEBEN SER LAS COMPONENTES DEL HEADER
+        for (HashMap<String, String> linea : nueva_informacion){
+            agregarAlCSV(linea);
+        }
+    }
+
+    public boolean borrarDelCSV(HashMap<String,String> info_a_borrar) throws InformacionDifiereDeHeaderException, IOException{
         //LA LISTA DEBE ESTAR EN EL ORDEN DEL HEADER Y POSEER LA MISMA CANTIDAD DE ITEMS
         //DEVUELVE FALSE SI LO QUE SE DESEA BORRAR NO EXISTE EN EL CSV
-        return false;
+        LinkedList<HashMap<String,String>> aux = this.leerTodoElCSV();
+        boolean seBorro = false;
+        this.cerrarCSV();
+        File archivo = new File(this.ruta);
+        archivo.delete();
+        this.crearCSV();
+        this.abrirLecturaCSV();
+        for (HashMap<String, String> linea : aux){
+            boolean borrar = false;
+            for (String key : header){
+                if(linea.get(key) == info_a_borrar.get(key)){
+                    borrar = true;
+                }
+            }
+            if (borrar == false){
+                agregarAlCSV(linea);
+            }
+        }
+        return seBorro;
     }
 
     public LinkedList<HashMap<String,String>> leerTodoElCSV(){
@@ -85,5 +113,10 @@ public class CSV {
         return return_list;
     }
 
-
+    public void cerrarCSV() throws IOException{
+        this.csvPrinter.close();
+        this.csvParser.close();
+        this.writer.close();
+        this.reader.close();
+    }
 }
