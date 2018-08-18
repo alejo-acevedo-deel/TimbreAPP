@@ -42,6 +42,11 @@ public class CSV {
         this.csvPrinter = new CSVPrinter(writer, CSVFormat.DEFAULT.withHeader(header));
     }
 
+    private void pisarCSV()throws IOException{
+        this.writer = Files.newBufferedWriter(Paths.get(ruta));
+        this.csvPrinter = new CSVPrinter(writer, CSVFormat.DEFAULT.withHeader(header));
+    }
+
     private void abrirLecturaCSV()throws IOException{
         this.reader = Files.newBufferedReader(Paths.get(ruta));
         this.csvParser = new CSVParser(reader, CSVFormat.DEFAULT.withHeader(header).withIgnoreHeaderCase().withSkipHeaderRecord().withTrim());
@@ -64,7 +69,7 @@ public class CSV {
         for (String key : header){
             aux.add(nueva_informacion.get(key));
         }
-        this.csvPrinter.printRecord(nueva_informacion);
+        this.csvPrinter.printRecord(aux);
         this.csvPrinter.flush();
     }
 
@@ -81,28 +86,32 @@ public class CSV {
         LinkedList<HashMap<String,String>> aux = this.leerTodoElCSV();
         boolean seBorro = false;
         this.cerrarCSV();
-        File archivo = new File(this.ruta);
-        archivo.delete();
-        this.crearCSV();
+        this.pisarCSV();
         this.abrirLecturaCSV();
         for (HashMap<String, String> linea : aux){
             boolean borrar = false;
             for (String key : header){
-                if(linea.get(key) == info_a_borrar.get(key)){
+                if(linea.get(key).compareTo(info_a_borrar.get(key))==0){
                     borrar = true;
+                    seBorro = true;
+                }else{
+                    borrar = false;
+                    seBorro = false;
                 }
             }
             if (borrar == false){
                 agregarAlCSV(linea);
+            }else{
+                borrar = false;
             }
         }
         return seBorro;
     }
 
-    public LinkedList<HashMap<String,String>> leerTodoElCSV(){
-        //FALTA IMPLEMENTACION xD.
+    public LinkedList<HashMap<String,String>> leerTodoElCSV() throws IOException {
         //DEVUELVE UNA LISTA DE LISTAS, CADA ITEM DE LA LISTA CONTIENE UN DICCIONARIO CON CADA VALOR DE LA LINEA.
         LinkedList<HashMap<String,String>> return_list = new LinkedList<HashMap<String, String>>();
+        this.abrirLecturaCSV();
         for (CSVRecord csvRecord : csvParser){
             HashMap<String, String> aux = new HashMap<String, String>();
             for (String key : header){
