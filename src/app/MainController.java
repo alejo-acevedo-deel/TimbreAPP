@@ -3,6 +3,8 @@ package app;
 
 
 import Excepciones.EstaDesconectado;
+import Excepciones.FormatoHoraErroneo;
+import Excepciones.FormatoMinutoErroneo;
 import Excepciones.NoSeConecto;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
@@ -21,12 +23,15 @@ public class MainController implements Receptores{
    @FXML
    ListView<Horario> listaSubir;
    @FXML
+   ListView<Horario> listaBajados;
+   @FXML
    ComboBox<Timbre> comboTimbres;
 
    private MisTimbres misTimbres = new MisTimbres(this);
    private Timbre timbreSeleccionado;
 
-   private MisHorarios misHorarios = new MisHorarios(this);;
+   private MisHorarios misHorarios = new MisHorarios(this);
+   private MisHorarios timbreHorarios = new MisHorarios(this);
 
    private AgregarHorariosController agregarHorariosController;
    private ModificarTimbresController modificarTimbresController;
@@ -39,7 +44,7 @@ public class MainController implements Receptores{
        primaryStage.setScene(new Scene(root));
        primaryStage.show();
        actualizarComboTimbres();
-       actualizarListaView(this.listaSubir);
+       actualizarListaView();
    }
 
    public void agregarHorarios(ActionEvent actionEvent) throws Exception{
@@ -73,12 +78,18 @@ public class MainController implements Receptores{
    }
 
    public void enviarHorarios(){
-       try{
-           this.timbreSeleccionado.enviar("Hola Manola\n");
-       }catch(EstaDesconectado estaDesconectado){
-            new Alerta(estaDesconectado);
-       }catch(NullPointerException nullPointerException){
-            new Alerta("No hay ningun timbre seleccionado");
+       try {
+           for (Horario horario : misHorarios.obtenerHorarios()) {
+               timbreSeleccionado.agregarHorario(horario);
+               misHorarios.borrarHorario(horario);
+               timbreHorarios.agregarHorario(horario);
+           }
+       }catch (EstaDesconectado estaDesconectado){
+           new Alerta(estaDesconectado);
+       }catch (FormatoHoraErroneo formatoHoraErroneo){
+
+       }catch (FormatoMinutoErroneo formatoMinutoErroneo){
+
        }
    }
 
@@ -99,8 +110,8 @@ public class MainController implements Receptores{
    }
 
    @Override
-   public void agregaronUnHorario() {
-        actualizarListaView(listaSubir);
+   public void modificaronUnHorario() {
+        actualizarListaView();
    }
 
    private void actualizarComboTimbres(){
@@ -108,8 +119,10 @@ public class MainController implements Receptores{
         this.comboTimbres.getItems().addAll(this.misTimbres.obtenerTimbres());
    }
 
-   private void actualizarListaView(ListView<Horario> listaView){
-        listaView.getItems().clear();
-        listaView.getItems().addAll(misHorarios.obtenerHorarios());
+   private void actualizarListaView(){
+       this.listaSubir.getItems().clear();
+       this.listaSubir.getItems().addAll(misHorarios.obtenerHorarios());
+       this.listaBajados.getItems().clear();
+       this.listaBajados.getItems().addAll(timbreHorarios.obtenerHorarios());
    }
 }

@@ -6,6 +6,6 @@ public interface Receptores {
 
     void agregaronUnTimbre();
 
-    void agregaronUnHorario();
+    void modificaronUnHorario();
 
 }

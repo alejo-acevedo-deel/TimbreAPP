@@ -61,12 +61,18 @@ public class Timbre{
             throw  new EstaDesconectado();
         }
     }
+
     public void enviar(String mensaje)throws EstaDesconectado{
         try {
             this.cliente.enviar(mensaje);
         } catch (IOException e) {
             throw new EstaDesconectado();
         }
+    }
+
+    public void agregarHorario(Horario horario)throws EstaDesconectado{
+        String mensaje = "A+/"+horario.obtenerHora()+":"+horario.obtenerMinutos()+":"+horario.obtenerLargo();
+        enviar(mensaje);
     }
 
     public boolean estaConectado(){

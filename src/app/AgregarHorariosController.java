@@ -1,5 +1,7 @@
 package app;
 
+import Excepciones.FormatoHoraErroneo;
+import Excepciones.FormatoMinutoErroneo;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -49,7 +51,13 @@ public class AgregarHorariosController {
         String hora = txtHora.getText();
         String minutos = txtMinutos.getText();
         boolean largo = radioLargo.isSelected();
-        misHorarios.agregarHorario(hora, minutos, largo);
+        try {
+            misHorarios.agregarHorario(hora, minutos, largo);
+        }catch (FormatoHoraErroneo formatoHoraErroneo){
+            new Alerta(formatoHoraErroneo);
+        }catch (FormatoMinutoErroneo formatoMinutoErroneo){
+            new Alerta(formatoMinutoErroneo);
+        }
     }
 
     public void unsetLargo(){

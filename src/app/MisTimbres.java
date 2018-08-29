@@ -11,21 +11,27 @@ import java.io.Reader;
 import java.net.MalformedURLException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.ListIterator;
+import java.util.*;
 
 public class MisTimbres {
 
     private static final String CSV_FILE = "Timbres.csv";
+    private static final String[] CSV_HEADER = {"Nombre", "IP"};
 
     private List<Timbre> timbres = new ArrayList<Timbre>();
+    private CSV csv;
 
     Receptores receptor;
 
     public MisTimbres(Receptores receptor){
         this.receptor = receptor;
-        this.cargarDesdeCSV();
+        try {
+            this.csv = new CSV(CSV_FILE, CSV_HEADER);
+            this.cargarDesdeCSV();
+        }catch (IOException ioException){
+
+        }
+
     }
 
 
@@ -51,7 +57,20 @@ public class MisTimbres {
     }
 
     private void cargarDesdeCSV(){
+        LinkedList<HashMap<String, String>> timbres;
         this.timbres.clear();
+        try {
+            timbres = csv.leerTodoElCSV();
+            for(HashMap<String, String> timbre: timbres){
+                this.agregarTimbreSil(timbre.get("Nombre"), timbre.get("IP"));
+            }
+        }catch (IOException ioException){
+
+        }catch (FaltaNombre faltaNombre){
+
+        }catch (FaltaIP faltaIP){
+
+        }
     }
 
     public void chequearIps(String ip) throws IpYaExiste{

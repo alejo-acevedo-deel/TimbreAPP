@@ -14,7 +14,7 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="684.0" prefWidth="1359.0" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane prefHeight="684.0" prefWidth="1359.0" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1">
    <children>
       <TabPane layoutX="237.0" layoutY="321.0" prefHeight="200.0" prefWidth="1332.0" tabClosingPolicy="UNAVAILABLE" tabMaxHeight="100.0" tabMaxWidth="100.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
         <tabs>
@@ -68,7 +68,7 @@
                                     </BorderPane>
                                     <BorderPane layoutX="10.0" layoutY="10.0" prefHeight="200.0" prefWidth="568.0">
                                        <center>
-                                          <ListView fx:id="listSubir1" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+                                          <ListView id="listaBajados" fx:id="listaBajados" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
                                              <BorderPane.margin>
                                                 <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                                              </BorderPane.margin>
