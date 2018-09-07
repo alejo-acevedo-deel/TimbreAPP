@@ -9,6 +9,7 @@ import javafx.stage.Stage;
 public class Main extends Application {
 
     private MainController mainController;
+    private Controlador controlador;
 
     public static void main(String[] args) {
         launch(args);
@@ -17,6 +18,7 @@ public class Main extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception {
         this.mainController = new MainController(primaryStage);
+        this.controlador = new ControladorPrincipal();
 
     }
 }

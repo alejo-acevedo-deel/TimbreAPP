@@ -1,11 +1,12 @@
-package app;
+package app.Horarios;
 
 import Excepciones.FormatoHoraErroneo;
 import Excepciones.FormatoMinutoErroneo;
 import Excepciones.SilenciosNegativos;
+import com.sun.glass.ui.Pixels;
 import javafx.scene.control.CheckBox;
 
-public class Horario extends CheckBox{
+class Horario extends CheckBox{
 
     private String hora;
     private String minutos;
@@ -13,7 +14,15 @@ public class Horario extends CheckBox{
     private String silencios;
     private String titulo;
 
-    public Horario(String hora, String minutos, boolean largo, String silencios)throws FormatoHoraErroneo, FormatoMinutoErroneo{
+    Horario(String hora, String minutos, boolean largo, String silencios)throws FormatoHoraErroneo, FormatoMinutoErroneo{
+        this.create(hora, minutos, largo, silencios);
+    }
+
+    Horario(String hora, String minutos, boolean largo)throws FormatoHoraErroneo, FormatoMinutoErroneo{
+        this.create(hora, minutos, largo, "0");
+    }
+
+    private void create(String hora, String minutos, boolean largo, String silencios) throws FormatoHoraErroneo, FormatoMinutoErroneo{
         if(Integer.parseInt(hora) < 0 || Integer.parseInt(hora) >= 24){
             throw new FormatoHoraErroneo();
         }
@@ -30,11 +39,11 @@ public class Horario extends CheckBox{
         }else {
             this.titulo = this.hora + " : " + this.minutos + "    Duracion Corta";
         }
-        this.setText(this.titulo);
-    }
+        try{
+            this.silenciarDurante(silencios);
+        }catch (SilenciosNegativos silenciosNegativos){
 
-    public Horario(String hora, String minutos, boolean largo)throws FormatoHoraErroneo, FormatoMinutoErroneo{
-        new Horario(hora, minutos, largo, "0");
+        }
     }
 
     public String obtenerHora(){
@@ -58,6 +67,10 @@ public class Horario extends CheckBox{
 
     public String obtenerSilencion(){
         return this.silencios;
+    }
+
+    public String paraEnviar(){
+        return this.obtenerHora()+":"+this.obtenerMinutos()+":"+this.obtenerLargo();
     }
 
     public void silenciarDurante(String dias)throws SilenciosNegativos{

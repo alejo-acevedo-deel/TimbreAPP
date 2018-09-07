@@ -3,54 +3,45 @@ package app;
 import Excepciones.FaltaIP;
 import Excepciones.FaltaNombre;
 import Excepciones.IpYaExiste;
-import com.sun.xml.internal.ws.policy.privateutil.PolicyUtils;
+import app.Timbres.MisTimbres;
+import app.Timbres.Timbre;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Alert;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
-import org.apache.commons.csv.CSVFormat;
-import org.apache.commons.csv.CSVPrinter;
 
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
 import java.io.IOException;
-import java.nio.file.*;
 
 
 public class ModificarTimbresController {
 
-    @FXML
-    TextField txtNombreAgregar;
-    @FXML
-    TextField txtIPAgregar;
-    @FXML
-    TextField txtNombreModificar;
-    @FXML
-    TextField txtIPModificar;
-    @FXML
-    ComboBox<Timbre> comboTimbreModificar;
-    @FXML
-    ComboBox<Timbre> comboTimbreBorrar;
-    @FXML
-    Label lblNombreBorrar;
-    @FXML
-    Label lblIPBorrar;
+    private Controlador controlador;
 
-    private static final String CSV_FILE = "Timbres.csv";
-    private MisTimbres misTimbres;
-    private Stage modificarTimbresStage;
-    private Timbre timbreModificar;
-    private Timbre timbreBorrar;
+    @FXML
+    private TextField txtNombreAgregar;
+    @FXML
+    private TextField txtIPAgregar;
+    @FXML
+    private TextField txtNombreModificar;
+    @FXML
+    private TextField txtIPModificar;
+    @FXML
+    private ComboBox comboTimbreModificar;
+    @FXML
+    private ComboBox comboTimbreBorrar;
+    @FXML
+    private Label lblNombreBorrar;
+    @FXML
+    private Label lblIPBorrar;
 
-    public ModificarTimbresController(MisTimbres misTimbres) throws IOException{
-        this.modificarTimbresStage = new Stage();
-        this.misTimbres = misTimbres;
+
+    public ModificarTimbresController() throws IOException{
+        Stage modificarTimbresStage = new Stage();
         FXMLLoader loader = new FXMLLoader(getClass().getResource("ModificarTimbresView.fxml"));
         loader.setController(this);
         Parent root = loader.load();
@@ -62,20 +53,9 @@ public class ModificarTimbresController {
 
 
     public void agregarTimbre(ActionEvent actionEvent) throws IOException{
-        String nombre = txtNombreAgregar.getText();
-        String IP = txtIPAgregar.getText();
-        try {
-            this.misTimbres.agregarTimbre(nombre, IP);
-            txtNombreAgregar.setText("");
-            txtIPAgregar.setText("");
-        }catch (IpYaExiste ipYaExiste){
-            new Alerta(ipYaExiste);
-        }catch (FaltaIP faltaIP){
-            new Alerta(faltaIP);
-        }catch (FaltaNombre faltaNombre) {
-            new Alerta(faltaNombre);
-        }
-        this.actualizarComboBox();
+        String nombre = this.txtNombreAgregar.getText();
+        String ip = this.txtIPAgregar.getText();
+        this.controlador.agregarUnTimbre(nombre,ip);
     }
 
     public void modificarTimbre(ActionEvent actionEvent) throws IOException{
@@ -121,6 +101,10 @@ public class ModificarTimbresController {
             lblNombreBorrar.setText("");
             lblIPBorrar.setText("");
         }
+    }
+
+    public void setControlador(Controlador controlador) {
+        this.controlador = controlador;
     }
 
     private void actualizarComboBox(){

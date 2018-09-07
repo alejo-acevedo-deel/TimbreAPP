@@ -2,7 +2,7 @@ package Test;
 
 import Excepciones.FaltaIP;
 import Excepciones.FaltaNombre;
-import app.Timbre;
+import app.Timbres.Timbre;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
