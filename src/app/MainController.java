@@ -1,15 +1,7 @@
 package app;
 
-
-
-import Excepciones.EstaDesconectado;
-import Excepciones.FormatoHoraErroneo;
-import Excepciones.FormatoMinutoErroneo;
-import Excepciones.NoSeConecto;
-import app.Horarios.Horario;
 import app.Horarios.MisHorarios;
 import app.Timbres.MisTimbres;
-import app.Timbres.Timbre;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -18,8 +10,6 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.stage.Stage;
-
-import java.util.List;
 
 public class MainController{
 
@@ -75,55 +65,39 @@ public class MainController{
    }
 
    public void enviarHorario(){
-       if(misHorarios.obtenerHorarios().isEmpty()){
-           return;
-       }
-       Horario horario = this.misHorarios.obtenerHorarios().get(0);
-       try {
-           this.timbreSeleccionado.agregarHorario(horario);
-           this.misHorarios.borrarHorario(horario);
-           this.timbreHorarios.agregarHorario(horario);
-       }catch (EstaDesconectado estaDesconectado){
-           new Alerta(estaDesconectado);
-       }catch (FormatoHoraErroneo formatoHoraErroneo){
-
-       }catch (FormatoMinutoErroneo formatoMinutoErroneo){
-
-       }catch (NullPointerException nullPointerException){
-           new Alerta("No hay ningun timbre seleccionado");
-       }
+       this.controlador.enviarHorario();
    }
 
    public void modificarTimbres(ActionEvent actionEvent) throws Exception{
-        this.modificarTimbresController = new ModificarTimbresController(this.misTimbres);
+        this.controlador.mostrarModificarTimbresView();
    }
 
    public void obtenerHorario(){
-       try {
-           this.timbreSeleccionado.obtenerHorario();
-       }catch (EstaDesconectado estaDesconectado){
-           new Alerta(estaDesconectado);
-       }catch (NullPointerException nullPointerException){
-           new Alerta("No hay ningun timbre seleccionado");
-       }
+       this.controlador.obtenerHorariosTimbre();
    }
 
-   private void actualizarComboTimbres(){
+   public void actualizarComboTimbres(MisTimbres misTimbres){
        Platform.runLater(
                () -> {
-                   this.comboTimbres.getItems().clear();
-                   this.comboTimbres.getItems().addAll(this.misTimbres.obtenerTimbres());
+                   this.misTimbresView.getItems().clear();
+                   this.misTimbresView.getItems().addAll(misTimbres);
                }
        );
    }
 
-   private void actualizarListaView(){
+   public void actualizarHorariosUsuariosView(MisHorarios misHorarios){
+        this.actualizarListaView(misHorarios, horariosUsuariosView);
+    }
+
+    public void actualizarHorariosTimbreView(MisHorarios misHorarios){
+        this.actualizarListaView(misHorarios, horariosTimbreView);
+    }
+
+   private void actualizarListaView(MisHorarios misHorarios, ListView listView){
        Platform.runLater(
                () -> {
-                   this.listaSubir.getItems().clear();
-                   this.listaSubir.getItems().addAll(misHorarios.obtenerHorarios());
-                   this.listaBajados.getItems().clear();
-                   this.listaBajados.getItems().addAll(timbreHorarios.obtenerHorarios());
+                   listView.getItems().clear();
+                   listView.getItems().addAll(misHorarios);
                }
        );
    }

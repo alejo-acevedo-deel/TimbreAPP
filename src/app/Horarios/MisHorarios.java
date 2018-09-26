@@ -17,4 +17,8 @@ public class MisHorarios extends LinkedList<Horario>{
         Horario horario = new Horario(hora, minutos, largo, silencios);
         super.add(horario);
     }
+
+    public String aEnviar(){
+        return super.get(0).paraEnviar();
+    }
 }

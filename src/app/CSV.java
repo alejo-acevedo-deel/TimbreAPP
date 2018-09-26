@@ -80,7 +80,7 @@ public class CSV {
         }
     }
 
-    public boolean borrarDelCSV(HashMap<String,String> info_a_borrar) throws InformacionDifiereDeHeaderException, IOException{
+    public boolean modificarDelCSV(HashMap<String,String> infoBorrar, HashMap<String, String> infoModificar) throws InformacionDifiereDeHeaderException, IOException{
         //LA LISTA DEBE ESTAR EN EL ORDEN DEL HEADER Y POSEER LA MISMA CANTIDAD DE ITEMS
         //DEVUELVE FALSE SI LO QUE SE DESEA BORRAR NO EXISTE EN EL CSV
         LinkedList<HashMap<String,String>> aux = this.leerTodoElCSV();
@@ -91,7 +91,7 @@ public class CSV {
         for (HashMap<String, String> linea : aux){
             boolean borrar = false;
             for (String key : header){
-                if(linea.get(key).compareTo(info_a_borrar.get(key))==0){
+                if(linea.get(key).compareTo(infoBorrar.get(key))==0){
                     borrar = true;
                     seBorro = true;
                 }else{
@@ -102,7 +102,33 @@ public class CSV {
             if (borrar == false){
                 agregarAlCSV(linea);
             }else{
-                borrar = false;
+                agregarAlCSV(infoModificar);
+            }
+        }
+        return seBorro;
+    }
+
+    public boolean borrarDelCSV(HashMap<String,String> infoBorrar) throws InformacionDifiereDeHeaderException, IOException{
+        //LA LISTA DEBE ESTAR EN EL ORDEN DEL HEADER Y POSEER LA MISMA CANTIDAD DE ITEMS
+        //DEVUELVE FALSE SI LO QUE SE DESEA BORRAR NO EXISTE EN EL CSV
+        LinkedList<HashMap<String,String>> aux = this.leerTodoElCSV();
+        boolean seBorro = false;
+        this.cerrarCSV();
+        this.pisarCSV();
+        this.abrirLecturaCSV();
+        for (HashMap<String, String> linea : aux){
+            boolean borrar = false;
+            for (String key : header){
+                if(linea.get(key).compareTo(infoBorrar.get(key))==0){
+                    borrar = true;
+                    seBorro = true;
+                }else{
+                    borrar = false;
+                    seBorro = false;
+                }
+            }
+            if (borrar == false){
+                agregarAlCSV(linea);
             }
         }
         return seBorro;

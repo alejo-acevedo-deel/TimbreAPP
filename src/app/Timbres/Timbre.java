@@ -4,6 +4,7 @@ import Excepciones.EstaDesconectado;
 import Excepciones.FaltaIP;
 import Excepciones.FaltaNombre;
 import Excepciones.NoSeConecto;
+import app.Controlador;
 
 import java.io.IOException;
 import java.util.function.Function;
@@ -15,7 +16,7 @@ class Timbre{
     private String ip;
     private static int PUERTO = 35;
     private TCPClient cliente;
-    private Receptores receptor;
+    private Controlador controlador;
 
     Timbre(String nombre, String ip) throws FaltaNombre, FaltaIP{
         this.setearNombre(nombre);
@@ -75,7 +76,7 @@ class Timbre{
         this.cliente.setearFuncion(new Function() {
             @Override
             public Object apply(Object o) {
-                receptor.seEnvioUnaAlarma((String) o );
+                controlador.horarioEnviado((String) o);
                 return null;
             }
         });
@@ -86,7 +87,7 @@ class Timbre{
         this.cliente.setearFuncion(new Function() {
             @Override
             public Object apply(Object o) {
-                receptor.seRecibioUnaAlarma((String) o);
+                controlador.recibirHorario((String) o);
                 return null;
             }
         });
@@ -97,8 +98,8 @@ class Timbre{
         return this.cliente.estaConectado();
     }
 
-    public void setearReceptor(Receptores receptor) {
-        this.receptor = receptor;
+    public void setearControlador(Controlador controlador) {
+        this.controlador = controlador;
     }
 
     public String getName(){
@@ -106,11 +107,22 @@ class Timbre{
     }
 
     public String toString(){
-        return this.obtenerNombre();
+        return this.obtenerNombre() + " - " + this.obtenerIp();
     }
 
     public String joiner(){
         return this.nombre + "," + this.ip;
     }
 
+    public void borrarUnHorario(int indice)throws EstaDesconectado {
+        String mensaje = "A-/" + ((char) indice);
+        this.cliente.setearFuncion(new Function() {
+            @Override
+            public Object apply(Object o) {
+                controlador.horarioBorrado((String) o);
+                return null;
+            }
+        });
+        this.enviar(mensaje);
+    }
 }

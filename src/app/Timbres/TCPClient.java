@@ -24,9 +24,7 @@ class TCPClient extends Thread{
     }
 
     public void conectar() throws IOException{
-        InetSocketAddress add = new InetSocketAddress(ip, puerto);
-        System.out.println(add.toString());
-        this.socket.connect(add);
+        this.socket.connect(new InetSocketAddress(ip, puerto), 5000);
         this.toServer = new PrintWriter(socket.getOutputStream());
         this.fromServer = new BufferedReader(new InputStreamReader(socket.getInputStream()));
     }
@@ -37,14 +35,12 @@ class TCPClient extends Thread{
 
 
     public void desconectar()throws IOException{
-        //this.thread.destroy();
         this.socket.close();
     }
 
     public void enviar(String mensaje) throws IOException{
         toServer.append(mensaje).append("\n");
         toServer.flush();
-        //toServer.writeUTF(mensaje+";");
     }
 
     public boolean estaConectado(){

@@ -7,21 +7,19 @@ public interface Controlador{
 
     void agregarUnTimbre(String nombre, String ip);
 
-    void modificarUnTimbre(String nombre, String ip);
+    void modificarUnTimbre(String nombre, String ip, int indice);
 
-    void eliminarUnTimbre(String nombre, String i);
-
-    void agregarUnHorario(String hora, String minuto, boolean largo, MisHorarios misHorarios);
-
-    void borrarUnHorario(int indice, MisHorarios misHorarios);
+    void eliminarUnTimbre(int indice);
 
     void agregarUnHorarioUsuario(String hora, String minuto, boolean largo);
 
     void borrarUnHorarioUsuario(int indice);
 
-    void agregarUnHorarioTimbre(String hora, String minuto, boolean largo);
+    void agregarUnHorarioTimbre(String hora, String minuto, boolean largo, String silencios);
 
     void borrarUnHorarioTimbre(int indice);
+
+    void obtenerHorariosTimbre();
 
     void enviarHorario();
 
@@ -33,6 +31,11 @@ public interface Controlador{
 
     void seleccionarUnTimbre(int indice);
 
+    void setMainController(MainController mainController);
+
     MisTimbres obtenerMisTimbres();
 
+    void horarioEnviado(String o);
+
+    void horarioBorrado(String o);
 }
