@@ -97,9 +97,9 @@
                               </HBox>
                            </center>
                            <top>
-                              <FlowPane alignment="CENTER" columnHalignment="CENTER" prefHeight="40.0" prefWidth="1359.0" BorderPane.alignment="CENTER">
+                              <FlowPane id="misTimbrewViewmisTimbrewView" alignment="CENTER" columnHalignment="CENTER" prefHeight="40.0" prefWidth="1359.0" BorderPane.alignment="CENTER">
                                  <children>
-                                    <ComboBox id="comboTimbres" fx:id="misTimbrewView" onAction="#seleccionarTimbre" prefHeight="27.0" prefWidth="394.0" promptText="Eliga Un Timbre" />
+                                    <ComboBox id="misTimbresView" fx:id="misTimbresView" onAction="#seleccionarTimbre" prefHeight="27.0" prefWidth="394.0" promptText="Eliga Un Timbre" />
                                     <Button fx:id="btnModificarTimbres" mnemonicParsing="false" onAction="#mostrarModificarTimbresView" text="+/-">
                                        <FlowPane.margin>
                                           <Insets left="10.0" />

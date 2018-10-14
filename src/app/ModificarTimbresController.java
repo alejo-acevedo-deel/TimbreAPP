@@ -1,10 +1,6 @@
 package app;
 
-import Excepciones.FaltaIP;
-import Excepciones.FaltaNombre;
-import Excepciones.IpYaExiste;
 import app.Timbres.MisTimbres;
-import app.Timbres.Timbre;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -48,7 +44,6 @@ public class ModificarTimbresController {
         modificarTimbresStage.setTitle("Modificar Timbres");
         modificarTimbresStage.setScene(new Scene(root));
         modificarTimbresStage.show();
-        this.actualizarComboBox();
     }
 
 
@@ -59,59 +54,51 @@ public class ModificarTimbresController {
     }
 
     public void modificarTimbre(ActionEvent actionEvent) throws IOException{
-        String nombre = txtNombreModificar.getText();
-        String IP = txtIPModificar.getText();
-        try {
-            this.misTimbres.chequearIps(IP);
-            this.timbreModificar.setearIp(IP);
-            this.timbreModificar.setearNombre(nombre);
-        }catch (IpYaExiste ipYaExiste){
-            new Alerta(ipYaExiste);
-        }catch (FaltaIP faltaIP){
-            new Alerta(faltaIP);
-        }catch (FaltaNombre faltaNombre){
-            new Alerta(faltaNombre);
+        if(this.comboTimbreModificar.getSelectionModel().getSelectedItem()==null){
+            new Alerta("Seleccione un timbre antes de proseguir");
         }
-        this.actualizarComboBox();
+        String nombre = txtNombreModificar.getText();
+        String ip = txtIPModificar.getText();
+        this.controlador.modificarUnTimbre(nombre, ip, this.comboTimbreModificar.getSelectionModel().getSelectedIndex());
+    }
+
+    public void timbreSeleccionadoModificar(ActionEvent actionEvent){
+        if(this.comboTimbreModificar.getSelectionModel().getSelectedItem() == null){
+            this.txtNombreModificar.setText("");
+            this.txtIPModificar.setText("");
+            return;
+        }
+        this.txtNombreModificar.setText(this.comboTimbreModificar.getSelectionModel().getSelectedItem().toString().split(" - ")[0]);
+        this.txtIPModificar.setText(this.comboTimbreModificar.getSelectionModel().getSelectedItem().toString().split(" - ")[1]);
     }
 
     public void borrarTimbre(ActionEvent actionEvent) throws Exception{
-        this.misTimbres.borrarTimbre(this.timbreBorrar);
-        this.actualizarComboBox();
-    }
-
-    public void timbreSeleccionadoModificar(){
-        this.timbreModificar = comboTimbreModificar.getSelectionModel().getSelectedItem();
-        if(this.timbreModificar != null){
-            txtNombreModificar.setText(this.timbreModificar.obtenerNombre());
-            txtIPModificar.setText(this.timbreModificar.obtenerIp());
-        }else{
-            txtNombreModificar.setText("");
-            txtIPModificar.setText("");
+        if(this.comboTimbreBorrar.getSelectionModel().getSelectedItem()==null){
+            new Alerta("Seleccione un timbre antes de proseguir");
         }
+        this.controlador.eliminarUnTimbre(this.comboTimbreModificar.getSelectionModel().getSelectedIndex());
     }
 
-    public void timbreSeleccionadoBorrar(){
-        this.timbreBorrar = comboTimbreBorrar.getSelectionModel().getSelectedItem();
-        if(this.timbreBorrar != null){
-            lblNombreBorrar.setText(this.timbreBorrar.obtenerNombre());
-            lblIPBorrar.setText(this.timbreBorrar.obtenerIp());
-
-        }else{
-            lblNombreBorrar.setText("");
-            lblIPBorrar.setText("");
+    public void timbreSeleccionadoBorrar(ActionEvent actionEvent){
+        if(this.comboTimbreBorrar.getSelectionModel().getSelectedItem()==null){
+            this.lblNombreBorrar.setText("");
+            this.lblIPBorrar.setText("");
+            return;
         }
+        this.lblNombreBorrar.setText(this.comboTimbreBorrar.getSelectionModel().getSelectedItem().toString().split(" - ")[0]);
+        this.lblIPBorrar.setText(this.comboTimbreBorrar.getSelectionModel().getSelectedItem().toString().split(" - ")[1]);
     }
+
 
     public void setControlador(Controlador controlador) {
         this.controlador = controlador;
     }
 
-    private void actualizarComboBox(){
+    public void actualizarComboBox(MisTimbres misTimbres){
         comboTimbreModificar.getItems().clear();
-        comboTimbreModificar.getItems().addAll(this.misTimbres.obtenerTimbres());
+        comboTimbreModificar.getItems().addAll(misTimbres);
         comboTimbreBorrar.getItems().clear();
-        comboTimbreBorrar.getItems().addAll(this.misTimbres.obtenerTimbres());
+        comboTimbreBorrar.getItems().addAll(misTimbres);
     }
 
 
