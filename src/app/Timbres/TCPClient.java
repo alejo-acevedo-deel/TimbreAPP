@@ -47,19 +47,8 @@ class TCPClient extends Thread{
         return this.socket.isConnected();
     }
 
-
-    @Override
-    public void run() {
-        String mensaje;
-        do{
-            try {
-                mensaje = fromServer.readLine();
-                System.out.println("Se ha recibido el siguiente mensaje: " + mensaje);
-                funcion.apply(mensaje);
-            }catch (IOException e){
-                System.out.println(e.getMessage());
-            }
-        }while(true);
+    public String esperarMensaje() throws IOException{
+        return fromServer.readLine();
     }
 }
 

@@ -2,23 +2,11 @@ package app.Horarios;
 
 import Excepciones.FormatoHoraErroneo;
 import Excepciones.FormatoMinutoErroneo;
+import javafx.scene.control.ListView;
 
 import java.util.LinkedList;
 
 public class MisHorarios extends LinkedList<Horario>{
 
-    public MisHorarios(){}
-
-    public void agregarHorario(String hora, String minutos, boolean largo)throws FormatoHoraErroneo, FormatoMinutoErroneo{
-        this.agregarHorario(hora, minutos, largo, "0");
-    }
-
-    public void agregarHorario(String hora, String minutos, boolean largo, String silencios)throws FormatoHoraErroneo, FormatoMinutoErroneo{
-        Horario horario = new Horario(hora, minutos, largo, silencios);
-        super.add(horario);
-    }
-
-    public String aEnviar(){
-        return super.get(0).paraEnviar();
-    }
+    private ListView view;
 }

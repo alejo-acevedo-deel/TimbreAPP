@@ -37,8 +37,8 @@
                                        <bottom>
                                           <ButtonBar nodeOrientation="RIGHT_TO_LEFT">
                                             <buttons>
-                                              <Button fx:id="btnAgregarHorarios" mnemonicParsing="false" onAction="#mostrarAgregarHorariosView" prefHeight="30.0" prefWidth="496.0" text="Agregar" />
-                                                <Button fx:id="btnBorarHorariosUsuarios" mnemonicParsing="false" onAction="#borrarHorariosUsuario" text="Borrar" />
+                                              <Button fx:id="btnAgregarHorarios" mnemonicParsing="false" prefHeight="30.0" prefWidth="496.0" text="Agregar" />
+                                                <Button fx:id="btnBorarHorariosUsuarios" mnemonicParsing="false" text="Borrar" />
                                                 <Button mnemonicParsing="false" prefHeight="27.0" text="Borrar Todos" />
                                             </buttons>
                                              <BorderPane.margin>
@@ -52,7 +52,7 @@
                                     </BorderPane>
                                     <BorderPane prefHeight="809.0" prefWidth="224.0">
                                        <center>
-                                          <Button id="btnEnviar" fx:id="btnEnviar" mnemonicParsing="false" onAction="#enviarHorario" prefHeight="126.0" prefWidth="202.0" text="Enviar -&gt;" textAlignment="CENTER" BorderPane.alignment="CENTER">
+                                          <Button id="btnEnviar" fx:id="btnEnviar" mnemonicParsing="false" prefHeight="126.0" prefWidth="202.0" text="Enviar -&gt;" textAlignment="CENTER" BorderPane.alignment="CENTER">
                                              <font>
                                                 <Font size="22.0" />
                                              </font>
@@ -77,7 +77,7 @@
                                        <bottom>
                                           <ButtonBar nodeOrientation="RIGHT_TO_LEFT">
                                              <buttons>
-                                                <Button fx:id="btnActualizar" mnemonicParsing="false" onAction="#obtenerHorario" prefHeight="30.0" prefWidth="496.0" text="Actualizar" />
+                                                <Button fx:id="btnActualizar" mnemonicParsing="false" prefHeight="30.0" prefWidth="496.0" text="Actualizar" />
                                                 <Button mnemonicParsing="false" text="Borrar" />
                                                 <Button mnemonicParsing="false" prefHeight="27.0" text="Borrar Todos" />
                                              </buttons>
@@ -99,8 +99,8 @@
                            <top>
                               <FlowPane id="misTimbrewViewmisTimbrewView" alignment="CENTER" columnHalignment="CENTER" prefHeight="40.0" prefWidth="1359.0" BorderPane.alignment="CENTER">
                                  <children>
-                                    <ComboBox id="misTimbresView" fx:id="misTimbresView" onAction="#seleccionarTimbre" prefHeight="27.0" prefWidth="394.0" promptText="Eliga Un Timbre" />
-                                    <Button fx:id="btnModificarTimbres" mnemonicParsing="false" onAction="#mostrarModificarTimbresView" text="+/-">
+                                    <ComboBox id="misTimbresView" fx:id="misTimbresView" prefHeight="27.0" prefWidth="394.0" promptText="Eliga Un Timbre" />
+                                    <Button fx:id="btnModificarTimbres" mnemonicParsing="false" text="+/-">
                                        <FlowPane.margin>
                                           <Insets left="10.0" />
                                        </FlowPane.margin>
