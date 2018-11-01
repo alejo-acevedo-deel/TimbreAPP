@@ -9,10 +9,21 @@ import javafx.scene.control.CheckBox;
 class Horario extends CheckBox{
 
     private String hora;
-    private String minutos;
+    private String minuto;
     private boolean largo;
     private String silencios;
-    private CheckBox view;
+    private CheckBox view = new CheckBox();
+
+    public Horario(String hora, String minuto, boolean largo){
+        this.hora = hora;
+        this.minuto = minuto;
+        this.largo = largo;
+        this.view.setText(hora+":"+minuto);
+    }
+
+    public CheckBox getView(){
+        return this.view;
+    }
 
 
 }

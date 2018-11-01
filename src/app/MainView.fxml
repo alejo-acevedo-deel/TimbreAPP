@@ -16,7 +16,7 @@
 
 <AnchorPane prefHeight="684.0" prefWidth="1359.0" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1">
    <children>
-      <TabPane layoutX="237.0" layoutY="321.0" prefHeight="200.0" prefWidth="1332.0" tabClosingPolicy="UNAVAILABLE" tabMaxHeight="100.0" tabMaxWidth="100.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+      <TabPane accessibleRole="PARENT" layoutX="237.0" layoutY="321.0" prefHeight="200.0" prefWidth="1332.0" tabClosingPolicy="UNAVAILABLE" tabMaxHeight="100.0" tabMaxWidth="100.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
         <tabs>
           <Tab text="Horarios">
             <content>
@@ -37,7 +37,7 @@
                                        <bottom>
                                           <ButtonBar nodeOrientation="RIGHT_TO_LEFT">
                                             <buttons>
-                                              <Button fx:id="btnAgregarHorarios" mnemonicParsing="false" prefHeight="30.0" prefWidth="496.0" text="Agregar" />
+                                              <Button fx:id="btnAgregarHorarios" mnemonicParsing="false" onAction="#mostrarAgregarHorariosView" prefHeight="30.0" prefWidth="496.0" text="Agregar" />
                                                 <Button fx:id="btnBorarHorariosUsuarios" mnemonicParsing="false" text="Borrar" />
                                                 <Button mnemonicParsing="false" prefHeight="27.0" text="Borrar Todos" />
                                             </buttons>

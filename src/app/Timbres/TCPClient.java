@@ -14,8 +14,6 @@ class TCPClient extends Thread{
     private Socket socket;
     private PrintWriter toServer;
     private BufferedReader fromServer;
-    private Thread thread;
-    private Function funcion;
 
     TCPClient(String ip,int puerto){
         this.ip = ip;
@@ -29,16 +27,12 @@ class TCPClient extends Thread{
         this.fromServer = new BufferedReader(new InputStreamReader(socket.getInputStream()));
     }
 
-    public void setearFuncion(Function funcion){
-        this.funcion = funcion;
-    }
-
 
     public void desconectar()throws IOException{
         this.socket.close();
     }
 
-    public void enviar(String mensaje) throws IOException{
+    public void enviarMensaje(String mensaje) throws IOException{
         toServer.append(mensaje).append("\n");
         toServer.flush();
     }
@@ -47,7 +41,7 @@ class TCPClient extends Thread{
         return this.socket.isConnected();
     }
 
-    public String esperarMensaje() throws IOException{
+    public String esperarRespuesta() throws IOException{
         return fromServer.readLine();
     }
 }

@@ -70,7 +70,7 @@
                         <Insets bottom="10.0" left="35.0" top="10.0" />
                      </GridPane.margin>
                   </Button>
-                  <Button fx:id="btnAgregar" mnemonicParsing="false" onAction="#agregarHorarios" prefHeight="63.0" prefWidth="134.0" text="Agregar" GridPane.columnIndex="2" GridPane.rowIndex="2">
+                  <Button fx:id="btnAgregar" mnemonicParsing="false" onAction="#agregarHorario" prefHeight="63.0" prefWidth="134.0" text="Agregar" GridPane.columnIndex="2" GridPane.rowIndex="2">
                      <GridPane.margin>
                         <Insets bottom="10.0" left="35.0" top="10.0" />
                      </GridPane.margin>

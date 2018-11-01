@@ -16,4 +16,9 @@ class Timbre{
     private static int PUERTO = 35;
     private TCPClient cliente;
 
+    public Timbre(String nombre, String ip){
+        this.nombre = nombre;
+        this.ip = ip;
+    }
+
 }
