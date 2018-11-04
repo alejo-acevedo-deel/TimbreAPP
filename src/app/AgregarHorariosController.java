@@ -30,6 +30,7 @@ public class AgregarHorariosController {
 
     private MisHorarios horarios;
 
+
     public AgregarHorariosController(MisHorarios horarios) throws IOException{
         Stage agregarHorariosStage = new Stage();
         agregarHorariosStage.setAlwaysOnTop(true);
@@ -39,7 +40,13 @@ public class AgregarHorariosController {
     }
 
     public void agregarHorario(ActionEvent event) {
-        this.horarios.agregarHorario(this.txtHora.getText(), this.txtMinutos.getText(), this.radioLargo.isSelected());
+        try {
+            this.horarios.agregarHorario(this.txtHora.getText(), this.txtMinutos.getText(), this.radioLargo.isSelected());
+        } catch (FormatoMinutoErroneo formatoMinutoErroneo) {
+            new Alerta(formatoMinutoErroneo);
+        } catch (FormatoHoraErroneo formatoHoraErroneo) {
+            new Alerta(formatoHoraErroneo);
+        }
     }
 
     public void unsetCorto(ActionEvent event){

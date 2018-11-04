@@ -28,4 +28,12 @@ public class MisTimbres extends LinkedList<Timbre>{
     }
 
     public MisHorarios getMisHorarios(){ return this.misHorarios;}
+
+    public void seleccionarTimbre(int indice){
+        this.timbreSeleccionado = super.get(indice);
+    }
+
+    public void tranferirHorarios(LinkedList horarios) throws EstaDesconectado, NoSeRecibioRespuesta {
+        this.timbreSeleccionado.tranferiorHorarios(horarios);
+    }
 }

@@ -1,11 +1,12 @@
 package app.Timbres;
 
-import Excepciones.EstaDesconectado;
-import Excepciones.FaltaIP;
-import Excepciones.FaltaNombre;
-import Excepciones.NoSeConecto;
+import Excepciones.*;
+import app.Horarios.Horario;
+import app.Horarios.MisHorarios;
 
 import java.io.IOException;
+import java.net.SocketTimeoutException;
+import java.util.LinkedList;
 import java.util.function.Function;
 
 
@@ -21,4 +22,20 @@ class Timbre{
         this.ip = ip;
     }
 
+    public void tranferiorHorarios(MisHorarios horarios) throws EstaDesconectado, NoSeRecibioRespuesta {
+        for(Horario horario : horarios){
+            try {
+                this.enviar(horario);
+                this.cliente.esperarRespuesta();
+            } catch (SocketTimeoutException socketTimeOutException){
+                throw new NoSeRecibioRespuesta();
+            } catch (IOException e) {
+                throw new EstaDesconectado();
+            }
+        }
+    }
+
+    private void enviar(String msg) throws IOException{
+        cliente.enviarMensaje(msg);
+    }
 }

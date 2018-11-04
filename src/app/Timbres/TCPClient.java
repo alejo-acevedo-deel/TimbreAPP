@@ -1,5 +1,7 @@
 package app.Timbres;
 
+import org.omg.CORBA.TIMEOUT;
+
 import java.io.*;
 import java.net.InetSocketAddress;
 import java.net.Socket;
@@ -14,6 +16,8 @@ class TCPClient extends Thread{
     private Socket socket;
     private PrintWriter toServer;
     private BufferedReader fromServer;
+    private static int TIMEOUT = 5000;
+    private static int SO_TIMEOUT = 5000;
 
     TCPClient(String ip,int puerto){
         this.ip = ip;
@@ -22,9 +26,10 @@ class TCPClient extends Thread{
     }
 
     public void conectar() throws IOException{
-        this.socket.connect(new InetSocketAddress(ip, puerto), 5000);
+        this.socket.connect(new InetSocketAddress(ip, puerto), TIMEOUT);
         this.toServer = new PrintWriter(socket.getOutputStream());
         this.fromServer = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+        this.socket.setSoTimeout(SO_TIMEOUT);
     }
 
 

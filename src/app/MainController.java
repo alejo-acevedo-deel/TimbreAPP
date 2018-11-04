@@ -1,8 +1,11 @@
 package app;
 
+import Excepciones.EstaDesconectado;
+import Excepciones.NoSeRecibioRespuesta;
 import app.Horarios.MisHorarios;
 import app.Timbres.MisTimbres;
 import javafx.application.Platform;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -12,13 +15,15 @@ import javafx.scene.control.*;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.LinkedList;
 
 public class MainController{
 
     @FXML
-    private ListView horariosUsuariosView;
+    private ListView<CheckBox> horariosUsuariosView;
     @FXML
-    private ListView horariosTimbreView;
+    private ListView<CheckBox> horariosTimbreView;
     @FXML
     private ComboBox misTimbresView;
 
@@ -38,6 +43,24 @@ public class MainController{
 
     public void mostragarModificarTimbresView(ActionEvent actionEvent) throws  IOException{
         new ModificarTimbresController(this.misTimbres);
+    }
+
+    public void borrarHorariosUsuario(ActionEvent actionEvent){
+        this.misHorarios.borrarHorarios();
+    }
+
+    public void seleccionarTimbre(ActionEvent actionEvent){
+        this.misTimbres.seleccionarTimbre(this.misTimbresView.getSelectionModel().getSelectedIndex());
+    }
+
+    public void tranferirHorarios(ActionEvent actionEvent){
+        try {
+            this.misTimbres.tranferirHorarios(misHorarios.obtenerComoMensaje());
+        } catch (EstaDesconectado estaDesconectado) {
+            new Alerta(estaDesconectado);
+        } catch (NoSeRecibioRespuesta noSeRecibioRespuesta) {
+            new Alerta(noSeRecibioRespuesta);
+        }
     }
 
     private void loadView(Stage stage)throws IOException{
