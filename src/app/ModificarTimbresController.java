@@ -1,5 +1,8 @@
 package app;
 
+import Excepciones.FaltaIP;
+import Excepciones.FaltaNombre;
+import Excepciones.FormatoIpErroneo;
 import app.Timbres.MisTimbres;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -42,6 +45,48 @@ public class ModificarTimbresController {
         this.comboTimbreModificar.setItems(this.misTimbres.getView());
         this.comboTimbreBorrar.setItems(this.misTimbres.getView());
     }
+
+    public void agregarTimbre(ActionEvent actionEvent){
+        try {
+            this.misTimbres.agregarTimbre(this.txtNombreAgregar.getText(), this.txtIPAgregar.getText());
+        } catch (FaltaIP faltaIP) {
+            new Alerta(faltaIP);
+        } catch (FaltaNombre faltaNombre) {
+            new Alerta(faltaNombre);
+        } catch (FormatoIpErroneo formatoIpErroneo) {
+            new Alerta(formatoIpErroneo);
+        }
+    }
+
+    public void timbreSeleccionadoModificar(ActionEvent actionEvent){
+        this.txtNombreModificar.setText(this.misTimbres.obtenerNombreDel(this.comboTimbreModificar.getSelectionModel().getSelectedIndex()));
+        this.txtIPModificar.setText(this.misTimbres.obtenerIpDel(this.comboTimbreModificar.getSelectionModel().getSelectedIndex()));
+    }
+
+    public void timbreSeleccionadoBorrar(ActionEvent actionEvent){
+        this.lblNombreBorrar.setText(this.misTimbres.obtenerNombreDel(this.comboTimbreBorrar.getSelectionModel().getSelectedIndex()));
+        this.lblIPBorrar.setText(this.misTimbres.obtenerIpDel(this.comboTimbreBorrar.getSelectionModel().getSelectedIndex()));
+    }
+
+    public void modificarTimbre(ActionEvent actionEvent){
+        int indice = this.comboTimbreModificar.getSelectionModel().getSelectedIndex();
+        try {
+            this.misTimbres.modificarNombreIpDel(indice, this.txtNombreModificar.getText(), this.txtIPModificar.getText());
+            this.comboTimbreModificar.getSelectionModel().clearAndSelect(indice);
+        } catch (FaltaNombre faltaNombre) {
+            new Alerta(faltaNombre);
+        } catch (FaltaIP faltaIP) {
+            new Alerta(faltaIP);
+        } catch (FormatoIpErroneo formatoIpErroneo) {
+            new Alerta(formatoIpErroneo);
+        }
+    }
+
+    public void borrarTimbre(ActionEvent actionEvent){
+        this.misTimbres.borrar(this.comboTimbreBorrar.getSelectionModel().getSelectedIndex());
+    }
+
+
 
     private void loadView(Stage stage)throws IOException{
         FXMLLoader loader = new FXMLLoader(getClass().getResource("ModificarTimbresView.fxml"));

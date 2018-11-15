@@ -25,13 +25,23 @@ public class MisHorarios extends LinkedList<Horario> {
         this.view.add(horarioAux.getView());
     }
 
-    public void borrarHorarios() {
+    public void borrarHorariosSeleccionados() {
         for(int i = 0; i < super.size(); i++){
             if(super.get(i).getView().isSelected()){
-                super.remove(i);
-                this.view.remove(i);
+                this.borrarHorario(i);
+                i--;
             }
         }
+    }
+
+    public void borrarHorariosTodos(){
+        this.view.clear();
+        super.clear();
+    }
+
+    public void borrarHorario(int indice){
+        super.remove(indice);
+        this.view.remove(indice);
     }
 
     public void silenciarDurante(String dias){
@@ -50,7 +60,31 @@ public class MisHorarios extends LinkedList<Horario> {
         return horarios;
     }
 
+    public void borrarPrimeros(int primeros){
+        for(int i = 0; i < primeros; i++){
+            this.borrarHorario(0);
+        }
+    }
+
     public ObservableList<CheckBox> getView() {
         return this.view;
+    }
+
+    public void agregarHorariosDesdeMsg(LinkedList<String> horarios) throws FormatoMinutoErroneo, FormatoHoraErroneo {
+        for(int i = 0; i<horarios.size()-1; i++){
+            String[] horario = horarios.get(i).split(":");
+            this.agregarHorario(horario[0], horario[1], horario[2].equals("L"));
+            super.get(i).silenciarDurante(horario[3]);
+        }
+    }
+
+    public LinkedList<Integer> obtenerIndicesSeleccionados() {
+        LinkedList<Integer> indices = new LinkedList<>();
+        for (int i = 0; this.size() > i; i++) {
+            if (super.get(i).getView().isSelected()) {
+                indices.push(i);
+            }
+        }
+        return indices;
     }
 }

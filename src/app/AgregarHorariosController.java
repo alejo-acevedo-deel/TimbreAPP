@@ -65,7 +65,6 @@ public class AgregarHorariosController {
         stage.setScene(new Scene(fxmlLoader.load()));
         stage.setResizable(false);
         stage.show();
-
     }
 
 }
