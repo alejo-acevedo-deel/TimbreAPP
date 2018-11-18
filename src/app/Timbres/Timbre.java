@@ -1,6 +1,7 @@
 package app.Timbres;
 
 import Excepciones.*;
+import javafx.scene.control.RadioButton;
 
 import java.io.IOException;
 import java.net.SocketTimeoutException;
@@ -109,7 +110,17 @@ class Timbre {
             this.obtenerDiasLibres();
         }catch (NoSeConecto noSeConecto){
         }
+        this.desconectar();
         return this.estado;
+    }
+
+
+    public void desconectar() {
+        try {
+            this.cliente.desconectar();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     private void obtenerDuracion() throws IOException, EstaDesconectado {
@@ -146,7 +157,9 @@ class Timbre {
         diasLibresArray = this.cliente.esperarRespuesta().split("");
         try {
             for(String dia : diasLibresArray){
-                diasLibres = diasLibres + " " + this.dias[Integer.valueOf(dia)-1];
+                try {
+                    diasLibres = diasLibres + " " + this.dias[Integer.valueOf(dia) - 1];
+                }catch (NumberFormatException e){}
             }
         }catch (NumberFormatException e){
             e.printStackTrace();
@@ -159,6 +172,74 @@ class Timbre {
             cliente.enviarMensaje(msg);
         }catch (NullPointerException e){
             throw new EstaDesconectado(this.nombre);
+        }
+    }
+
+    public void configurarHoraAutomaticamente() throws IOException, EstaDesconectado {
+        this.enviar("HS/A");
+    }
+
+    public void configurarHoraManualmente(String hora, String minuto, int dia) throws FormatoHoraErroneo, FormatoMinutoErroneo, IOException, EstaDesconectado, FaltaDiaDeSemana {
+        try {
+            if (Integer.valueOf(hora) < 0 || Integer.valueOf(hora) > 24) {
+                throw new FormatoHoraErroneo();
+            }
+            if(Integer.valueOf(minuto) <0 || Integer.valueOf(minuto) > 60){
+                throw  new FormatoMinutoErroneo();
+            }
+            if( dia<0){
+                throw new FaltaDiaDeSemana();
+            }
+        }catch (NumberFormatException e){
+            throw new FormatoHoraErroneo();
+        }
+        if(hora.length()<2){
+            hora = "0"+hora;
+        }else {
+            hora = hora;
+        }
+        if(minuto.length()<2){
+            minuto = "0"+minuto;
+        }else {
+            minuto = minuto;
+        }
+        this.enviar("HS/"+hora+":"+minuto+":"+String.valueOf(dia+1));
+    }
+
+    public void configurarDuracion(String larga, String corta) throws IOException, EstaDesconectado, FormatoDeDuracionErroneo {
+        try{
+            if (Integer.valueOf(larga) <= 0 || Integer.valueOf(corta) <= 0){
+                throw new FormatoDeDuracionErroneo();
+            }
+        }catch (NumberFormatException e){
+            throw new FormatoDeDuracionErroneo();
+        }
+        this.enviar("DS/"+larga+":"+corta);
+    }
+
+    public void configurarLibres(LinkedList<RadioButton> radioDias) throws IOException, EstaDesconectado {
+        String mensaje="LS/";
+        for(int i = 0; i<radioDias.size(); i++){
+            if(radioDias.get(i).isSelected()){
+                mensaje = mensaje+String.valueOf(i+1);
+            }
+        }
+        this.enviar(mensaje);
+    }
+
+    public void activarVacaciones() throws IOException, EstaDesconectado {
+        this.enviar("V?");
+        String vacaciones = this.cliente.esperarRespuesta();
+        if(vacaciones.equals("Off")){
+            this.enviar("VS/");
+        }
+    }
+
+    public void desactivarVacaciones() throws IOException, EstaDesconectado {
+        this.enviar("V?");
+        String vacaciones = this.cliente.esperarRespuesta();
+        if(vacaciones.equals("On")){
+            this.enviar("VS/");
         }
     }
 }

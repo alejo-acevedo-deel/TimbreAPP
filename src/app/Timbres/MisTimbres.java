@@ -5,6 +5,8 @@ import app.CSV;
 import app.Horarios.MisHorarios;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.scene.control.RadioButton;
+import javafx.scene.control.TextField;
 
 import java.io.IOException;
 import java.util.*;
@@ -45,11 +47,17 @@ public class MisTimbres extends LinkedList<Timbre>{
     public MisHorarios getMisHorarios(){ return this.misHorarios;}
 
     public void seleccionarTimbre(int indice) throws FormatoMinutoErroneo, NoSeRecibioRespuesta, FormatoHoraErroneo, EstaDesconectado, NoSeConecto, NoHayTimbreSeleccionado {
+        if(this.timbreSeleccionado != null){
+            this.timbreSeleccionado.desconectar();
+        }
         this.misHorarios.borrarHorariosTodos();
-        if(indice<0){return;}
+        if(indice<0){
+            this.timbreSeleccionado = null;
+            return;
+        }
         super.get(indice).conectar();
-        this.obtenerHorarios();
         this.timbreSeleccionado = super.get(indice);
+        this.obtenerHorarios();
     }
 
     public void tranferirHorarios(LinkedList horarios) throws EstaDesconectado, EnvioDeHorariosTruncado, FormatoHoraErroneo, NoSeRecibioRespuesta, FormatoMinutoErroneo, NoHayTimbreSeleccionado {
@@ -148,6 +156,14 @@ public class MisTimbres extends LinkedList<Timbre>{
         this.obtenerHorarios();
     }
 
+    public ObservableList obtenerEstados() throws IOException, EstaDesconectado {
+        ObservableList estados = FXCollections.observableArrayList();
+        for(Timbre timbre : this){
+            estados.add(timbre.obtenerEstado());
+        }
+        return estados;
+    }
+
     private void agregarTimbreAlInicio(String nombre, String ip) throws FaltaIP, FaltaNombre, FormatoIpErroneo {
         Timbre aux = new Timbre(nombre, ip);
         super.add(aux);
@@ -167,13 +183,75 @@ public class MisTimbres extends LinkedList<Timbre>{
         }
     }
 
-
-    public ObservableList obtenerEstados() throws IOException, EstaDesconectado {
-        ObservableList estados = FXCollections.observableArrayList();
-        for(Timbre timbre : this){
-            estados.add(timbre.obtenerEstado());
+    public void configurarHoraAutomaticamete() throws NoSeConecto, IOException, EstaDesconectado {
+        try{
+            timbreSeleccionado.configurarHoraAutomaticamente();
+        }catch (NullPointerException e) {
+            for (Timbre timbre : this) {
+                timbre.conectar();
+                timbre.configurarHoraAutomaticamente();
+                timbre.desconectar();
+            }
         }
-        return estados;
     }
 
+    public void configurarHoraManualmente(String hora, String minutos, int dia) throws FormatoMinutoErroneo, FormatoHoraErroneo, EstaDesconectado, IOException, NoSeConecto, FaltaDiaDeSemana {
+        try {
+            timbreSeleccionado.configurarHoraManualmente(hora, minutos, dia);
+        }catch (NullPointerException e){
+            for(Timbre timbre : this){
+                timbre.conectar();
+                timbre.configurarHoraManualmente(hora, minutos, dia);
+                timbre.desconectar();
+            }
+        }
+    }
+
+    public void configurarDuracion(String larga, String corta) throws FormatoDeDuracionErroneo, IOException, EstaDesconectado, NoSeConecto {
+        try {
+            timbreSeleccionado.configurarDuracion(larga, corta);
+        }catch (NullPointerException e){
+            for(Timbre timbre : this){
+                timbre.conectar();
+                timbre.configurarDuracion(larga, corta);
+                timbre.desconectar();
+            }
+        }
+    }
+
+    public void configurarLibres(LinkedList<RadioButton> radioDias) throws NoSeConecto, IOException, EstaDesconectado {
+        try {
+            timbreSeleccionado.configurarLibres(radioDias);
+        }catch (NullPointerException e){
+            for(Timbre timbre : this){
+                timbre.conectar();
+                timbre.configurarLibres(radioDias);
+                timbre.desconectar();
+            }
+        }
+    }
+
+    public void activarVacaciones() throws IOException, EstaDesconectado, NoSeConecto {
+        try {
+            timbreSeleccionado.activarVacaciones();
+        }catch (NullPointerException e){
+            for(Timbre timbre : this){
+                timbre.conectar();
+                timbre.activarVacaciones();
+                timbre.desconectar();
+            }
+        }
+    }
+
+    public void desactivarVacaciones() throws IOException, EstaDesconectado, NoSeConecto {
+        try {
+            timbreSeleccionado.desactivarVacaciones();
+        }catch (NullPointerException e){
+            for(Timbre timbre : this){
+                timbre.conectar();
+                timbre.desactivarVacaciones();
+                timbre.desconectar();
+            }
+        }
+    }
 }

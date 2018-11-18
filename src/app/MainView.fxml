@@ -27,7 +27,7 @@
    <children>
       <TabPane accessibleRole="PARENT" layoutX="237.0" layoutY="321.0" prefHeight="200.0" prefWidth="1332.0" tabClosingPolicy="UNAVAILABLE" tabMaxHeight="100.0" tabMaxWidth="100.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
         <tabs>
-          <Tab text="Horarios">
+          <Tab onSelectionChanged="#horariosSeleccionado" text="Horarios">
             <content>
               <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                      <children>
@@ -108,7 +108,7 @@
                            <top>
                               <FlowPane id="misTimbrewViewmisTimbrewView" alignment="CENTER" columnHalignment="CENTER" prefHeight="40.0" prefWidth="1359.0" BorderPane.alignment="CENTER">
                                  <children>
-                                    <ComboBox id="misTimbresView" fx:id="misTimbresView" onAction="#seleccionarTimbre" prefHeight="27.0" prefWidth="394.0" promptText="Eliga Un Timbre" />
+                                    <ComboBox id="comboMisTimbres" fx:id="comboMisTimbres" onAction="#comboMisTimbesSeleccionado" prefHeight="27.0" prefWidth="394.0" promptText="Eliga Un Timbre" />
                                     <Button fx:id="btnModificarTimbres" mnemonicParsing="false" onAction="#mostrarModificarTimbresView" text="+/-">
                                        <FlowPane.margin>
                                           <Insets left="10.0" />
@@ -159,295 +159,321 @@
                      </children></AnchorPane>
             </content>
           </Tab>
-            <Tab text="Configuracion">
+            <Tab onSelectionChanged="#configuracionSeleccionado" text="Configuracion">
               <content>
                 <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                      <children>
-                        <GridPane alignment="CENTER" gridLinesVisible="true" layoutX="539.0" layoutY="178.0" prefHeight="651.0" prefWidth="1359.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-                          <columnConstraints>
-                            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                          </columnConstraints>
-                          <rowConstraints>
-                            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                          </rowConstraints>
-                           <children>
-                              <BorderPane prefHeight="200.0" prefWidth="200.0" GridPane.rowIndex="1">
-                                 <center>
-                                    <GridPane alignment="CENTER" centerShape="false" BorderPane.alignment="CENTER">
-                                      <columnConstraints>
-                                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                                      </columnConstraints>
-                                      <rowConstraints>
-                                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                                      </rowConstraints>
-                                       <children>
-                                          <Label prefHeight="50.0" prefWidth="340.0" text="Duracion Corta" textAlignment="CENTER">
-                                             <font>
-                                                <Font size="41.0" />
-                                             </font>
-                                             <GridPane.margin>
-                                                <Insets left="10.0" />
-                                             </GridPane.margin>
-                                          </Label>
-                                          <Label prefHeight="50.0" prefWidth="377.0" text="Duracion Larga" GridPane.rowIndex="1">
-                                             <font>
-                                                <Font size="41.0" />
-                                             </font>
-                                             <GridPane.margin>
-                                                <Insets left="10.0" />
-                                             </GridPane.margin>
-                                          </Label>
-                                          <TextField alignment="CENTER" prefHeight="67.0" prefWidth="340.0" promptText="Segundos" GridPane.columnIndex="1">
-                                             <GridPane.margin>
-                                                <Insets bottom="10.0" left="50.0" right="50.0" top="10.0" />
-                                             </GridPane.margin>
-                                             <font>
-                                                <Font size="29.0" />
-                                             </font>
-                                          </TextField>
-                                          <TextField alignment="CENTER" prefHeight="72.0" prefWidth="340.0" promptText="Segundos" GridPane.columnIndex="1" GridPane.rowIndex="1">
-                                             <GridPane.margin>
-                                                <Insets bottom="10.0" left="50.0" right="50.0" top="10.0" />
-                                             </GridPane.margin>
-                                             <font>
-                                                <Font size="29.0" />
-                                             </font>
-                                          </TextField>
-                                       </children>
-                                    </GridPane>
-                                 </center>
-                                 <top>
-                                    <ComboBox prefHeight="30.0" prefWidth="500.0" promptText="Configurar la duracion de todos los timbres o seleccionar uno" BorderPane.alignment="CENTER">
-                                       <BorderPane.margin>
-                                          <Insets bottom="10.0" top="10.0" />
-                                       </BorderPane.margin>
-                                    </ComboBox>
-                                 </top>
-                                 <bottom>
-                                    <Button mnemonicParsing="false" prefHeight="70.0" prefWidth="195.0" text="Configurar Todos" BorderPane.alignment="CENTER">
-                                       <BorderPane.margin>
-                                          <Insets bottom="10.0" top="10.0" />
-                                       </BorderPane.margin>
-                                    </Button>
-                                 </bottom>
-                              </BorderPane>
-                              <BorderPane prefHeight="200.0" prefWidth="200.0">
-                                 <top>
-                                    <ComboBox prefHeight="30.0" prefWidth="500.0" promptText="Configurar la hora de todos los timbres o seleccionar uno" BorderPane.alignment="CENTER">
-                                       <BorderPane.margin>
-                                          <Insets bottom="10.0" top="10.0" />
-                                       </BorderPane.margin>
-                                    </ComboBox>
-                                 </top>
-                                 <center>
-                                    <HBox alignment="CENTER" fillHeight="false" prefHeight="100.0" prefWidth="200.0" spacing="50.0" BorderPane.alignment="CENTER">
-                                       <children>
-                                          <TextField alignment="CENTER" editable="false" prefHeight="150.0" prefWidth="200.0" promptText="HH">
-                                             <font>
-                                                <Font size="74.0" />
-                                             </font>
-                                          </TextField>
-                                          <Label prefHeight="150.0" prefWidth="50.0" text=":" textAlignment="CENTER" wrapText="true">
-                                             <font>
-                                                <Font name="System Bold" size="96.0" />
-                                             </font>
-                                          </Label>
-                                          <TextField alignment="CENTER" prefHeight="150.0" prefWidth="200.0" promptText="MM">
-                                             <font>
-                                                <Font size="74.0" />
-                                             </font>
-                                          </TextField>
-                                       </children>
-                                       <BorderPane.margin>
-                                          <Insets left="10.0" right="10.0" />
-                                       </BorderPane.margin>
-                                    </HBox>
-                                 </center>
-                                 <bottom>
-                                    <HBox alignment="CENTER" prefHeight="67.0" prefWidth="680.0" spacing="100.0" BorderPane.alignment="CENTER">
-                                       <children>
-                                          <Button mnemonicParsing="false" prefHeight="50.0" prefWidth="220.0" text="Configurar Automaticamente" />
-                                          <Button mnemonicParsing="false" prefHeight="50.0" prefWidth="220.0" text="Configurar Manualmente" />
-                                       </children>
-                                    </HBox>
-                                 </bottom>
-                              </BorderPane>
-                              <BorderPane prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
-                                 <top>
-                                    <ComboBox prefHeight="30.0" prefWidth="500.0" promptText="Configurar modo vacaciones para todos los timbres o seleccionar uno" BorderPane.alignment="CENTER">
-                                       <BorderPane.margin>
-                                          <Insets bottom="10.0" top="10.0" />
-                                       </BorderPane.margin>
-                                    </ComboBox>
-                                 </top>
-                                 <center>
-                                    <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="50.0" BorderPane.alignment="CENTER">
-                                       <children>
-                                          <Button mnemonicParsing="false" prefHeight="70.0" prefWidth="220.0" text="Desactivar" />
-                                          <Button mnemonicParsing="false" prefHeight="70.0" prefWidth="220.0" text="Activar" />
-                                       </children>
-                                    </HBox>
-                                 </center>
-                              </BorderPane>
-                              <BorderPane prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1">
-                                 <top>
-                                    <ComboBox prefHeight="30.0" prefWidth="500.0" promptText="Configurar los dias libres de todos los timbres o seleccionar uno" BorderPane.alignment="CENTER">
-                                       <BorderPane.margin>
-                                          <Insets bottom="10.0" top="10.0" />
-                                       </BorderPane.margin>
-                                    </ComboBox>
-                                 </top>
-                                 <bottom>
-                                    <Button mnemonicParsing="false" prefHeight="52.0" prefWidth="179.0" text="Configurar Todos" BorderPane.alignment="CENTER">
-                                       <BorderPane.margin>
-                                          <Insets bottom="10.0" top="10.0" />
-                                       </BorderPane.margin>
-                                    </Button>
-                                 </bottom>
-                                 <center>
-                                    <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" BorderPane.alignment="CENTER">
-                                       <children>
-                                          <VBox alignment="CENTER_RIGHT" prefHeight="249.0" prefWidth="350.0">
+                        <BorderPane prefHeight="651.0" prefWidth="1359.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                           <center>
+                              <GridPane alignment="CENTER" gridLinesVisible="true" prefHeight="651.0" prefWidth="1359.0" BorderPane.alignment="CENTER">
+                                <columnConstraints>
+                                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                </columnConstraints>
+                                <rowConstraints>
+                                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                </rowConstraints>
+                                 <children>
+                                    <BorderPane prefHeight="200.0" prefWidth="200.0" GridPane.rowIndex="1">
+                                       <center>
+                                          <GridPane alignment="CENTER" centerShape="false" BorderPane.alignment="CENTER">
+                                            <columnConstraints>
+                                              <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                              <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                            </columnConstraints>
+                                            <rowConstraints>
+                                              <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                              <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                            </rowConstraints>
                                              <children>
-                                                <Label prefHeight="26.0" prefWidth="118.0" text="Lunes" textAlignment="CENTER">
-                                                   <VBox.margin>
-                                                      <Insets bottom="5.0" top="5.0" />
-                                                   </VBox.margin>
+                                                <Label prefHeight="50.0" prefWidth="340.0" text="Duracion Corta" textAlignment="CENTER">
                                                    <font>
-                                                      <Font size="20.0" />
+                                                      <Font size="41.0" />
                                                    </font>
+                                                   <GridPane.margin>
+                                                      <Insets left="10.0" />
+                                                   </GridPane.margin>
                                                 </Label>
-                                                <Label layoutX="80.0" layoutY="116.0" prefHeight="26.0" prefWidth="122.0" text="Martes" textAlignment="CENTER">
+                                                <Label prefHeight="50.0" prefWidth="377.0" text="Duracion Larga" GridPane.rowIndex="1">
                                                    <font>
-                                                      <Font size="20.0" />
+                                                      <Font size="41.0" />
                                                    </font>
-                                                   <VBox.margin>
-                                                      <Insets bottom="5.0" top="5.0" />
-                                                   </VBox.margin>
+                                                   <GridPane.margin>
+                                                      <Insets left="10.0" />
+                                                   </GridPane.margin>
                                                 </Label>
-                                                <Label layoutX="80.0" layoutY="145.0" prefHeight="26.0" prefWidth="124.0" text="Miercoles" textAlignment="CENTER">
+                                                <TextField id="txtDuracionCorta" fx:id="txtDuracionCorta" alignment="CENTER" prefHeight="67.0" prefWidth="340.0" promptText="Segundos" GridPane.columnIndex="1">
+                                                   <GridPane.margin>
+                                                      <Insets bottom="10.0" left="50.0" right="50.0" top="10.0" />
+                                                   </GridPane.margin>
                                                    <font>
-                                                      <Font size="20.0" />
+                                                      <Font size="29.0" />
                                                    </font>
-                                                   <VBox.margin>
-                                                      <Insets bottom="5.0" top="5.0" />
-                                                   </VBox.margin>
-                                                </Label>
-                                                <Label layoutX="80.0" layoutY="163.0" prefHeight="26.0" prefWidth="124.0" text="Jueves" textAlignment="CENTER">
+                                                </TextField>
+                                                <TextField id="txtDuracionLarga" fx:id="txtDuracionLarga" alignment="CENTER" prefHeight="72.0" prefWidth="340.0" promptText="Segundos" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                                                   <GridPane.margin>
+                                                      <Insets bottom="10.0" left="50.0" right="50.0" top="10.0" />
+                                                   </GridPane.margin>
                                                    <font>
-                                                      <Font size="20.0" />
+                                                      <Font size="29.0" />
                                                    </font>
-                                                   <VBox.margin>
-                                                      <Insets bottom="5.0" top="5.0" />
-                                                   </VBox.margin>
-                                                </Label>
+                                                </TextField>
                                              </children>
-                                             <HBox.margin>
-                                                <Insets left="10.0" />
-                                             </HBox.margin>
-                                          </VBox>
-                                          <VBox alignment="CENTER" nodeOrientation="RIGHT_TO_LEFT" prefHeight="249.0" prefWidth="350.0">
+                                          </GridPane>
+                                       </center>
+                                       <bottom>
+                                          <Button mnemonicParsing="false" onAction="#configurarDuracion" prefHeight="70.0" prefWidth="195.0" text="Configurar Duracion" BorderPane.alignment="CENTER">
+                                             <BorderPane.margin>
+                                                <Insets bottom="10.0" top="10.0" />
+                                             </BorderPane.margin>
+                                          </Button>
+                                       </bottom>
+                                       <top>
+                                          <Label text="Configurar Duracion De Los Timbres" BorderPane.alignment="CENTER">
+                                             <BorderPane.margin>
+                                                <Insets top="10.0" />
+                                             </BorderPane.margin>
+                                             <font>
+                                                <Font size="24.0" />
+                                             </font></Label>
+                                       </top>
+                                    </BorderPane>
+                                    <BorderPane prefHeight="200.0" prefWidth="200.0">
+                                       <center>
+                                          <HBox alignment="CENTER" fillHeight="false" prefHeight="100.0" prefWidth="200.0" spacing="50.0" BorderPane.alignment="CENTER">
                                              <children>
-                                                <RadioButton mnemonicParsing="false" text="Libre">
+                                                <TextField id="txtHora" fx:id="txtHora" alignment="CENTER" prefHeight="140.0" prefWidth="160.0" promptText="HH">
                                                    <font>
-                                                      <Font size="20.0" />
+                                                      <Font size="55.0" />
                                                    </font>
-                                                   <padding>
-                                                      <Insets bottom="5.0" top="5.0" />
-                                                   </padding>
-                                                </RadioButton>
-                                                <RadioButton layoutX="10.0" layoutY="10.0" mnemonicParsing="false" text="Libre">
-                                                   <padding>
-                                                      <Insets bottom="5.0" top="5.0" />
-                                                   </padding>
+                                                   <HBox.margin>
+                                                      <Insets left="10.0" />
+                                                   </HBox.margin>
+                                                </TextField>
+                                                <Label prefHeight="150.0" prefWidth="50.0" text=":" textAlignment="CENTER" wrapText="true">
                                                    <font>
-                                                      <Font size="20.0" />
+                                                      <Font name="System Bold" size="96.0" />
                                                    </font>
-                                                </RadioButton>
-                                                <RadioButton layoutX="10.0" layoutY="28.0" mnemonicParsing="false" text="Libre">
-                                                   <VBox.margin>
-                                                      <Insets bottom="5.0" top="5.0" />
-                                                   </VBox.margin>
+                                                </Label>
+                                                <TextField id="txtMinutos" fx:id="txtMinutos" alignment="CENTER" prefHeight="140.0" prefWidth="160.0" promptText="MM">
                                                    <font>
-                                                      <Font size="20.0" />
+                                                      <Font size="55.0" />
                                                    </font>
-                                                </RadioButton>
-                                                <RadioButton layoutX="10.0" layoutY="28.0" mnemonicParsing="false" text="Libre">
-                                                   <VBox.margin>
-                                                      <Insets bottom="5.0" top="5.0" />
-                                                   </VBox.margin>
-                                                   <font>
-                                                      <Font size="20.0" />
-                                                   </font>
-                                                </RadioButton>
+                                                </TextField>
+                                                <ComboBox id="comboDias" fx:id="comboDias" prefHeight="27.0" prefWidth="172.0" promptText="Dia De La Semana">
+                                                   <HBox.margin>
+                                                      <Insets right="10.0" />
+                                                   </HBox.margin>
+                                                </ComboBox>
                                              </children>
-                                          </VBox>
-                                          <VBox alignment="CENTER_RIGHT" layoutX="10.0" layoutY="10.0" prefHeight="249.0" prefWidth="350.0">
+                                             <BorderPane.margin>
+                                                <Insets left="10.0" right="10.0" />
+                                             </BorderPane.margin>
+                                          </HBox>
+                                       </center>
+                                       <bottom>
+                                          <HBox alignment="CENTER" prefHeight="67.0" prefWidth="680.0" spacing="100.0" BorderPane.alignment="CENTER">
                                              <children>
-                                                <Label layoutX="80.0" layoutY="182.0" prefHeight="26.0" prefWidth="122.0" text="Viernes" textAlignment="CENTER">
-                                                   <font>
-                                                      <Font size="20.0" />
-                                                   </font>
-                                                   <VBox.margin>
-                                                      <Insets bottom="5.0" top="5.0" />
-                                                   </VBox.margin>
-                                                </Label>
-                                                <Label layoutX="80.0" layoutY="200.0" prefHeight="26.0" prefWidth="124.0" text="Sabado" textAlignment="CENTER">
-                                                   <font>
-                                                      <Font size="20.0" />
-                                                   </font>
-                                                   <VBox.margin>
-                                                      <Insets bottom="5.0" top="5.0" />
-                                                   </VBox.margin>
-                                                </Label>
-                                                <Label layoutX="80.0" layoutY="219.0" prefHeight="26.0" prefWidth="127.0" text="Domingo" textAlignment="CENTER">
-                                                   <font>
-                                                      <Font size="20.0" />
-                                                   </font>
-                                                   <VBox.margin>
-                                                      <Insets bottom="5.0" top="5.0" />
-                                                   </VBox.margin>
-                                                </Label>
+                                                <Button mnemonicParsing="false" onAction="#configurarHoraAutomaticamente" prefHeight="50.0" prefWidth="220.0" text="Configurar Automaticamente" />
+                                                <Button mnemonicParsing="false" onAction="#configurarHoraManualmente" prefHeight="50.0" prefWidth="220.0" text="Configurar Manualmente" />
                                              </children>
-                                          </VBox>
-                                          <VBox alignment="CENTER" layoutX="236.0" layoutY="10.0" nodeOrientation="RIGHT_TO_LEFT" prefHeight="249.0" prefWidth="350.0">
+                                          </HBox>
+                                       </bottom>
+                                       <top>
+                                          <Label text="Configurar Hora Actual" BorderPane.alignment="CENTER">
+                                             <BorderPane.margin>
+                                                <Insets top="10.0" />
+                                             </BorderPane.margin>
+                                             <font>
+                                                <Font size="24.0" />
+                                             </font></Label>
+                                       </top>
+                                    </BorderPane>
+                                    <BorderPane prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                                       <center>
+                                          <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="50.0" BorderPane.alignment="CENTER">
                                              <children>
-                                                <RadioButton layoutX="10.0" layoutY="28.0" mnemonicParsing="false" text="Libre">
-                                                   <VBox.margin>
-                                                      <Insets bottom="5.0" top="5.0" />
-                                                   </VBox.margin>
-                                                   <font>
-                                                      <Font size="20.0" />
-                                                   </font>
-                                                </RadioButton>
-                                                <RadioButton layoutX="10.0" layoutY="82.0" mnemonicParsing="false" text="Libre">
-                                                   <VBox.margin>
-                                                      <Insets bottom="5.0" top="5.0" />
-                                                   </VBox.margin>
-                                                   <font>
-                                                      <Font size="20.0" />
-                                                   </font>
-                                                </RadioButton>
-                                                <RadioButton layoutX="10.0" layoutY="64.0" mnemonicParsing="false" text="Libre">
-                                                   <VBox.margin>
-                                                      <Insets bottom="5.0" top="5.0" />
-                                                   </VBox.margin>
-                                                   <font>
-                                                      <Font size="20.0" />
-                                                   </font>
-                                                </RadioButton>
+                                                <Button mnemonicParsing="false" onAction="#desactivarVacaciones" prefHeight="70.0" prefWidth="220.0" text="Desactivar" />
+                                                <Button mnemonicParsing="false" onAction="#activarVacaciones" prefHeight="70.0" prefWidth="220.0" text="Activar" />
                                              </children>
-                                          </VBox>
-                                       </children>
-                                    </HBox>
-                                 </center>
-                              </BorderPane>
-                           </children>
-                        </GridPane>
+                                          </HBox>
+                                       </center>
+                                       <top>
+                                          <Label text="Configurar Modo Vacacines" BorderPane.alignment="CENTER">
+                                             <BorderPane.margin>
+                                                <Insets top="10.0" />
+                                             </BorderPane.margin>
+                                             <font>
+                                                <Font size="24.0" />
+                                             </font></Label>
+                                       </top>
+                                    </BorderPane>
+                                    <BorderPane prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1">
+                                       <bottom>
+                                          <Button mnemonicParsing="false" onAction="#configurarLibres" prefHeight="52.0" prefWidth="179.0" text="Configurar Dias Libres" BorderPane.alignment="CENTER">
+                                             <BorderPane.margin>
+                                                <Insets bottom="10.0" top="10.0" />
+                                             </BorderPane.margin>
+                                          </Button>
+                                       </bottom>
+                                       <center>
+                                          <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+                                             <children>
+                                                <VBox alignment="CENTER_RIGHT" prefHeight="249.0" prefWidth="350.0">
+                                                   <children>
+                                                      <Label prefHeight="26.0" prefWidth="118.0" text="Lunes" textAlignment="CENTER">
+                                                         <VBox.margin>
+                                                            <Insets bottom="5.0" top="5.0" />
+                                                         </VBox.margin>
+                                                         <font>
+                                                            <Font size="20.0" />
+                                                         </font>
+                                                      </Label>
+                                                      <Label layoutX="80.0" layoutY="116.0" prefHeight="26.0" prefWidth="122.0" text="Martes" textAlignment="CENTER">
+                                                         <font>
+                                                            <Font size="20.0" />
+                                                         </font>
+                                                         <VBox.margin>
+                                                            <Insets bottom="5.0" top="5.0" />
+                                                         </VBox.margin>
+                                                      </Label>
+                                                      <Label layoutX="80.0" layoutY="145.0" prefHeight="26.0" prefWidth="124.0" text="Miercoles" textAlignment="CENTER">
+                                                         <font>
+                                                            <Font size="20.0" />
+                                                         </font>
+                                                         <VBox.margin>
+                                                            <Insets bottom="5.0" top="5.0" />
+                                                         </VBox.margin>
+                                                      </Label>
+                                                      <Label layoutX="80.0" layoutY="163.0" prefHeight="26.0" prefWidth="124.0" text="Jueves" textAlignment="CENTER">
+                                                         <font>
+                                                            <Font size="20.0" />
+                                                         </font>
+                                                         <VBox.margin>
+                                                            <Insets bottom="5.0" top="5.0" />
+                                                         </VBox.margin>
+                                                      </Label>
+                                                   </children>
+                                                   <HBox.margin>
+                                                      <Insets left="10.0" />
+                                                   </HBox.margin>
+                                                </VBox>
+                                                <VBox alignment="CENTER" nodeOrientation="RIGHT_TO_LEFT" prefHeight="249.0" prefWidth="350.0">
+                                                   <children>
+                                                      <RadioButton id="radioLunes" fx:id="radioLunes" mnemonicParsing="false" text="Libre">
+                                                         <font>
+                                                            <Font size="20.0" />
+                                                         </font>
+                                                         <padding>
+                                                            <Insets bottom="5.0" top="5.0" />
+                                                         </padding>
+                                                      </RadioButton>
+                                                      <RadioButton id="radioMartes" fx:id="radioMartes" layoutX="10.0" layoutY="10.0" mnemonicParsing="false" text="Libre">
+                                                         <padding>
+                                                            <Insets bottom="5.0" top="5.0" />
+                                                         </padding>
+                                                         <font>
+                                                            <Font size="20.0" />
+                                                         </font>
+                                                      </RadioButton>
+                                                      <RadioButton id="radioMiercoles" fx:id="radioMiercoles" layoutX="10.0" layoutY="28.0" mnemonicParsing="false" text="Libre">
+                                                         <VBox.margin>
+                                                            <Insets bottom="5.0" top="5.0" />
+                                                         </VBox.margin>
+                                                         <font>
+                                                            <Font size="20.0" />
+                                                         </font>
+                                                      </RadioButton>
+                                                      <RadioButton id="radioJueves" fx:id="radioJueves" layoutX="10.0" layoutY="28.0" mnemonicParsing="false" text="Libre">
+                                                         <VBox.margin>
+                                                            <Insets bottom="5.0" top="5.0" />
+                                                         </VBox.margin>
+                                                         <font>
+                                                            <Font size="20.0" />
+                                                         </font>
+                                                      </RadioButton>
+                                                   </children>
+                                                </VBox>
+                                                <VBox alignment="CENTER_RIGHT" layoutX="10.0" layoutY="10.0" prefHeight="249.0" prefWidth="350.0">
+                                                   <children>
+                                                      <Label layoutX="80.0" layoutY="182.0" prefHeight="26.0" prefWidth="122.0" text="Viernes" textAlignment="CENTER">
+                                                         <font>
+                                                            <Font size="20.0" />
+                                                         </font>
+                                                         <VBox.margin>
+                                                            <Insets bottom="5.0" top="5.0" />
+                                                         </VBox.margin>
+                                                      </Label>
+                                                      <Label layoutX="80.0" layoutY="200.0" prefHeight="26.0" prefWidth="124.0" text="Sabado" textAlignment="CENTER">
+                                                         <font>
+                                                            <Font size="20.0" />
+                                                         </font>
+                                                         <VBox.margin>
+                                                            <Insets bottom="5.0" top="5.0" />
+                                                         </VBox.margin>
+                                                      </Label>
+                                                      <Label layoutX="80.0" layoutY="219.0" prefHeight="26.0" prefWidth="127.0" text="Domingo" textAlignment="CENTER">
+                                                         <font>
+                                                            <Font size="20.0" />
+                                                         </font>
+                                                         <VBox.margin>
+                                                            <Insets bottom="5.0" top="5.0" />
+                                                         </VBox.margin>
+                                                      </Label>
+                                                   </children>
+                                                </VBox>
+                                                <VBox alignment="CENTER" layoutX="236.0" layoutY="10.0" nodeOrientation="RIGHT_TO_LEFT" prefHeight="249.0" prefWidth="350.0">
+                                                   <children>
+                                                      <RadioButton id="radioViernes" fx:id="radioViernes" layoutX="10.0" layoutY="28.0" mnemonicParsing="false" text="Libre">
+                                                         <VBox.margin>
+                                                            <Insets bottom="5.0" top="5.0" />
+                                                         </VBox.margin>
+                                                         <font>
+                                                            <Font size="20.0" />
+                                                         </font>
+                                                      </RadioButton>
+                                                      <RadioButton id="radioSabado" fx:id="radioSabado" layoutX="10.0" layoutY="82.0" mnemonicParsing="false" text="Libre">
+                                                         <VBox.margin>
+                                                            <Insets bottom="5.0" top="5.0" />
+                                                         </VBox.margin>
+                                                         <font>
+                                                            <Font size="20.0" />
+                                                         </font>
+                                                      </RadioButton>
+                                                      <RadioButton id="radioDomingo" fx:id="radioDomingo" layoutX="10.0" layoutY="64.0" mnemonicParsing="false" text="Libre">
+                                                         <VBox.margin>
+                                                            <Insets bottom="5.0" top="5.0" />
+                                                         </VBox.margin>
+                                                         <font>
+                                                            <Font size="20.0" />
+                                                         </font>
+                                                      </RadioButton>
+                                                   </children>
+                                                </VBox>
+                                             </children>
+                                          </HBox>
+                                       </center>
+                                       <top>
+                                          <Label text="Configurar Dias Libres" BorderPane.alignment="CENTER">
+                                             <BorderPane.margin>
+                                                <Insets top="10.0" />
+                                             </BorderPane.margin>
+                                             <font>
+                                                <Font size="24.0" />
+                                             </font></Label>
+                                       </top>
+                                    </BorderPane>
+                                 </children>
+                              </GridPane>
+                           </center>
+                           <top>
+                              <ComboBox id="comboConfiguracion" fx:id="comboConfiguracion" onAction="#comboConfiguracionSeleccionado" prefHeight="30.0" prefWidth="500.0" promptText="Configure todos los timbres o seleccione cual quiere modificar" BorderPane.alignment="CENTER">
+                                 <BorderPane.margin>
+                                    <Insets bottom="10.0" top="10.0" />
+                                 </BorderPane.margin></ComboBox>
+                           </top>
+                        </BorderPane>
                      </children></AnchorPane>
               </content>
             </Tab>

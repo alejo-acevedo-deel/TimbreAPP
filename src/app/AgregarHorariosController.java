@@ -33,7 +33,6 @@ public class AgregarHorariosController {
 
     public AgregarHorariosController(MisHorarios horarios) throws IOException{
         Stage agregarHorariosStage = new Stage();
-        agregarHorariosStage.setAlwaysOnTop(true);
         this.loadView(agregarHorariosStage);
         this.horarios = horarios;
         this.radioLargo.setSelected(true);
@@ -58,11 +57,11 @@ public class AgregarHorariosController {
     }
 
     private void loadView(Stage stage)throws IOException{
-        FXMLLoader fxmlLoader = new FXMLLoader();
-        fxmlLoader.setLocation(getClass().getResource("agregarHorariosView.fxml"));
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("AgregarHorariosView.fxml"));
         fxmlLoader.setController(this);
+        Parent root = fxmlLoader.load();
         stage.setTitle("Agregar horario");
-        stage.setScene(new Scene(fxmlLoader.load()));
+        stage.setScene(new Scene(root));
         stage.setResizable(false);
         stage.show();
     }
