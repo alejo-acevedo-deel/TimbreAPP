@@ -73,7 +73,7 @@
                            <bottom>
                               <ButtonBar nodeOrientation="LEFT_TO_RIGHT" prefHeight="40.0" prefWidth="200.0" BorderPane.alignment="CENTER">
                                 <buttons>
-                                  <Button mnemonicParsing="false" prefHeight="25.0" prefWidth="223.0" text="Cancelar" />
+                                  <Button mnemonicParsing="false" onAction="#cancelar" prefHeight="25.0" prefWidth="223.0" text="Cancelar" />
                                     <Button fx:id="btnAgregarTimbre" mnemonicParsing="false" onAction="#agregarTimbre" text="Agregar" />
                                 </buttons>
                                  <BorderPane.margin>
@@ -131,7 +131,7 @@
                            <bottom>
                               <ButtonBar nodeOrientation="LEFT_TO_RIGHT" prefHeight="40.0" prefWidth="200.0" BorderPane.alignment="CENTER">
                                  <buttons>
-                                    <Button mnemonicParsing="false" prefHeight="25.0" prefWidth="223.0" text="Cancelar" />
+                                    <Button mnemonicParsing="false" onAction="#cancelar" prefHeight="25.0" prefWidth="223.0" text="Cancelar" />
                                     <Button fx:id="btnModificarTimbre" mnemonicParsing="false" onAction="#modificarTimbre" text="Modificar" />
                                  </buttons>
                                  <BorderPane.margin>
@@ -198,7 +198,7 @@
                            <bottom>
                               <ButtonBar nodeOrientation="LEFT_TO_RIGHT" prefHeight="40.0" prefWidth="200.0" BorderPane.alignment="CENTER">
                                  <buttons>
-                                    <Button mnemonicParsing="false" prefHeight="25.0" prefWidth="223.0" text="Cancelar" />
+                                    <Button mnemonicParsing="false" onAction="#cancelar" prefHeight="25.0" prefWidth="223.0" text="Cancelar" />
                                     <Button fx:id="btnBorrarTimbre" mnemonicParsing="false" onAction="#borrarTimbre" text="Borrar" />
                                  </buttons>
                                  <BorderPane.margin>

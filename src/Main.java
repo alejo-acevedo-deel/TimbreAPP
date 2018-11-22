@@ -1,5 +1,4 @@
-package app;
-
+import app.MainController;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -8,7 +7,7 @@ import javafx.stage.Stage;
 
 public class Main extends Application {
 
-    private MainController mainController;
+    //private MainController mainController;
 
     public static void main(String[] args) {
         launch(args);
@@ -16,7 +15,7 @@ public class Main extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception {
-        this.mainController = new MainController(primaryStage);
+        new MainController(primaryStage);
 
     }
 }

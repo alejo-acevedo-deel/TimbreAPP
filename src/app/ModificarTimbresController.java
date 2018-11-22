@@ -38,10 +38,12 @@ public class ModificarTimbresController {
 
 
     private MisTimbres misTimbres;
+    private Stage modificarTimbresStage;
 
     public ModificarTimbresController(MisTimbres misTimbres)throws IOException{
         this.misTimbres = misTimbres;
-        this.loadView(new Stage());
+        this.modificarTimbresStage = new Stage();
+        this.loadView(this.modificarTimbresStage);
         this.comboTimbreModificar.setItems(this.misTimbres.getView());
         this.comboTimbreBorrar.setItems(this.misTimbres.getView());
     }
@@ -84,6 +86,10 @@ public class ModificarTimbresController {
 
     public void borrarTimbre(ActionEvent actionEvent){
         this.misTimbres.borrar(this.comboTimbreBorrar.getSelectionModel().getSelectedIndex());
+    }
+
+    public void cancelar(ActionEvent actionEvent){
+        this.modificarTimbresStage.close();
     }
 
 

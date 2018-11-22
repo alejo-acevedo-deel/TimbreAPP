@@ -33,7 +33,11 @@ class Horario extends CheckBox{
     public void silenciarDurante(String dias){
         if(Integer.valueOf(dias) <= 0){return;}
         this.silencios = dias;
-        this.view.setText(this.view.getText() + " Silenciado durante "+dias+" dias");
+        if(dias.equals("255")){
+            this.view.setText(this.view.getText() + " Silenciado");
+        }else{
+            this.view.setText(this.view.getText() + " Silenciado durante "+dias+" dias");
+        }
     }
 
     public String obtenerComoMensaje(){

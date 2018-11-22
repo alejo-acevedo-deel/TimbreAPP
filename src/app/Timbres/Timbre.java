@@ -228,7 +228,7 @@ class Timbre {
     }
 
     public void activarVacaciones() throws IOException, EstaDesconectado {
-        this.enviar("V?");
+        this.enviar("V?/");
         String vacaciones = this.cliente.esperarRespuesta();
         if(vacaciones.equals("Off")){
             this.enviar("VS/");
@@ -236,10 +236,18 @@ class Timbre {
     }
 
     public void desactivarVacaciones() throws IOException, EstaDesconectado {
-        this.enviar("V?");
+        this.enviar("V?/");
         String vacaciones = this.cliente.esperarRespuesta();
         if(vacaciones.equals("On")){
             this.enviar("VS/");
         }
+    }
+
+    public void silenciar(Integer i) throws IOException, EstaDesconectado {
+        this.enviar("SS/"+i.toString()+":255");
+    }
+
+    public void desilenciar(Integer i) throws IOException, EstaDesconectado {
+        this.enviar("SS/"+i.toString()+":0");
     }
 }

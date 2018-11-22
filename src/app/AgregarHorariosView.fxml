@@ -65,7 +65,7 @@
                         <Font size="43.0" />
                      </font>
                   </TextField>
-                  <Button fx:id="btnCerrar" mnemonicParsing="false" prefHeight="66.0" prefWidth="137.0" text="Cerar" GridPane.columnIndex="1" GridPane.rowIndex="2">
+                  <Button fx:id="btnCerrar" mnemonicParsing="false" onAction="#cancelar" prefHeight="66.0" prefWidth="137.0" text="Cerar" GridPane.columnIndex="1" GridPane.rowIndex="2">
                      <GridPane.margin>
                         <Insets bottom="10.0" left="35.0" top="10.0" />
                      </GridPane.margin>

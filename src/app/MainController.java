@@ -130,6 +130,36 @@ public class MainController{
         this.seleccionarTimbre(this.comboMisTimbres.getSelectionModel().getSelectedIndex());
     }
 
+    public void silenciar(ActionEvent actionEvent){
+        try {
+            this.misTimbres.silenciar();
+        } catch (IOException | FormatoMinutoErroneo | NoSeRecibioRespuesta | FormatoHoraErroneo | NoHayTimbreSeleccionado e) {
+            e.printStackTrace();
+        } catch (EstaDesconectado estaDesconectado) {
+            new Alerta(estaDesconectado);
+        }
+    }
+
+    public void desilenciar(ActionEvent actionEvent){
+        try {
+            this.misTimbres.desilenciar();
+        } catch (IOException | FormatoMinutoErroneo | NoSeRecibioRespuesta | FormatoHoraErroneo | NoHayTimbreSeleccionado e) {
+            e.printStackTrace();
+        } catch (EstaDesconectado estaDesconectado) {
+            new Alerta(estaDesconectado);
+        }
+    }
+
+    public void silenciarTodos(ActionEvent actionEvent){
+        try {
+            misTimbres.silenciarTodos();
+        } catch (IOException | NoSeRecibioRespuesta | FormatoHoraErroneo | NoHayTimbreSeleccionado | FormatoMinutoErroneo e) {
+            e.printStackTrace();
+        } catch (EstaDesconectado estaDesconectado) {
+            new Alerta(estaDesconectado);
+        }
+    }
+
     /***** Metodos usados por el apartado estado del MainView *****/
 
     public void chequearEstado(ActionEvent actionEvent){

@@ -6,8 +6,10 @@
 <?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ListView?>
+<?import javafx.scene.control.MenuItem?>
 <?import javafx.scene.control.ProgressBar?>
 <?import javafx.scene.control.RadioButton?>
+<?import javafx.scene.control.SplitMenuButton?>
 <?import javafx.scene.control.Tab?>
 <?import javafx.scene.control.TabPane?>
 <?import javafx.scene.control.TableColumn?>
@@ -86,9 +88,14 @@
                                        <bottom>
                                           <ButtonBar nodeOrientation="RIGHT_TO_LEFT">
                                              <buttons>
-                                                <Button fx:id="btnActualizar" mnemonicParsing="false" prefHeight="30.0" prefWidth="496.0" text="Actualizar" />
-                                                <Button mnemonicParsing="false" onAction="#borrarHorariosSeleccionadosTimbre" text="Borrar" />
+                                                <SplitMenuButton mnemonicParsing="false" onAction="#silenciar" prefHeight="27.0" prefWidth="208.0" text="Silenciar" textAlignment="CENTER">
+                                                  <items>
+                                                    <MenuItem mnemonicParsing="false" onAction="#desilenciar" text="Desilenciar" />
+                                                    <MenuItem mnemonicParsing="false" onAction="#silenciarTodos" text="Silenciar Todos" />
+                                                  </items>
+                                                </SplitMenuButton>
                                                 <Button mnemonicParsing="false" onAction="#borrarHorariosTodosTimbre" prefHeight="27.0" text="Borrar Todos" />
+                                                <Button mnemonicParsing="false" onAction="#borrarHorariosSeleccionadosTimbre" text="Borrar" />
                                              </buttons>
                                              <BorderPane.margin>
                                                 <Insets bottom="10.0" left="10.0" right="10.0" />

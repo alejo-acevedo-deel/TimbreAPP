@@ -35,16 +35,19 @@ public class CSV {
     private void abrirCSV()throws IOException{
         this.writer = Files.newBufferedWriter(Paths.get(ruta), StandardOpenOption.APPEND);
         this.csvPrinter = new CSVPrinter(writer, CSVFormat.DEFAULT.withHeader(header).withSkipHeaderRecord());
+        this.csvPrinter.flush();
     }
 
     private void crearCSV()throws IOException{
         this.writer = Files.newBufferedWriter(Paths.get(ruta), StandardOpenOption.CREATE_NEW);
         this.csvPrinter = new CSVPrinter(writer, CSVFormat.DEFAULT.withHeader(header));
+        this.csvPrinter.flush();
     }
 
     private void pisarCSV()throws IOException{
         this.writer = Files.newBufferedWriter(Paths.get(ruta));
         this.csvPrinter = new CSVPrinter(writer, CSVFormat.DEFAULT.withHeader(header));
+        this.csvPrinter.flush();
     }
 
     private void abrirLecturaCSV()throws IOException{

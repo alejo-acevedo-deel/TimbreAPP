@@ -254,4 +254,27 @@ public class MisTimbres extends LinkedList<Timbre>{
             }
         }
     }
+
+    public void silenciar() throws IOException, EstaDesconectado, FormatoMinutoErroneo, NoSeRecibioRespuesta, FormatoHoraErroneo, NoHayTimbreSeleccionado {
+        Iterator indicesIteratos = this.misHorarios.obtenerIndicesSeleccionados().descendingIterator();
+        for(Integer i : this.misHorarios.obtenerIndicesSeleccionados()){
+            this.timbreSeleccionado.silenciar(i);
+        }
+        this.obtenerHorarios();
+    }
+
+    public void desilenciar() throws IOException, EstaDesconectado, FormatoMinutoErroneo, NoSeRecibioRespuesta, FormatoHoraErroneo, NoHayTimbreSeleccionado {
+        Iterator indicesIteratos = this.misHorarios.obtenerIndicesSeleccionados().descendingIterator();
+        for(Integer i : this.misHorarios.obtenerIndicesSeleccionados()){
+            this.timbreSeleccionado.desilenciar(i);
+        }
+        this.obtenerHorarios();
+    }
+
+    public void silenciarTodos() throws IOException, EstaDesconectado, FormatoMinutoErroneo, NoSeRecibioRespuesta, FormatoHoraErroneo, NoHayTimbreSeleccionado {
+        for(int i = 0; i < this.misHorarios.size(); i++){
+            this.timbreSeleccionado.silenciar(0);
+        }
+        this.obtenerHorarios();
+    }
 }

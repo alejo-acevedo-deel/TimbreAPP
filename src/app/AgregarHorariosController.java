@@ -29,11 +29,12 @@ public class AgregarHorariosController {
     private RadioButton radioLargo;
 
     private MisHorarios horarios;
+    private Stage agregarHorariosStage;
 
 
     public AgregarHorariosController(MisHorarios horarios) throws IOException{
-        Stage agregarHorariosStage = new Stage();
-        this.loadView(agregarHorariosStage);
+        this.agregarHorariosStage = new Stage();
+        this.loadView(this.agregarHorariosStage);
         this.horarios = horarios;
         this.radioLargo.setSelected(true);
     }
@@ -46,6 +47,10 @@ public class AgregarHorariosController {
         } catch (FormatoHoraErroneo formatoHoraErroneo) {
             new Alerta(formatoHoraErroneo);
         }
+    }
+
+    public void cancelar(ActionEvent actionEvent){
+        this.agregarHorariosStage.close();
     }
 
     public void unsetCorto(ActionEvent event){
