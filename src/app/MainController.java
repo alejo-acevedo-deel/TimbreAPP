@@ -193,6 +193,7 @@ public class MainController{
     public void configurarHoraAutomaticamente(ActionEvent actionEvent){
         try {
             this.misTimbres.configurarHoraAutomaticamete();
+            new Mensaje("El horario se actualizo automaticamente");
         } catch (NoSeConecto noSeConecto) {
             new Alerta(noSeConecto);
         } catch (IOException | EstaDesconectado e) {
@@ -203,6 +204,7 @@ public class MainController{
     public void configurarHoraManualmente(ActionEvent actionEvent){
         try {
             this.misTimbres.configurarHoraManualmente(this.txtHora.getText(), this.txtMinutos.getText(), this.comboDias.getSelectionModel().getSelectedIndex());
+            new Mensaje("El horario se actualizo correctamente");
         } catch (FormatoMinutoErroneo | NoSeConecto | FormatoHoraErroneo | FaltaDiaDeSemana e) {
             new Alerta(e);
         } catch (IOException | EstaDesconectado e) {
@@ -213,6 +215,7 @@ public class MainController{
     public void configurarDuracion(ActionEvent actionEvent) {
         try {
             this.misTimbres.configurarDuracion(this.txtDuracionLarga.getText(), this.txtDuracionCorta.getText());
+            new Mensaje("La duracion de sonado se actualizo correctamente");
         } catch (FormatoDeDuracionErroneo | NoSeConecto e) {
             new Alerta(e);
         } catch (IOException | EstaDesconectado e) {
@@ -223,6 +226,7 @@ public class MainController{
     public void configurarLibres(ActionEvent actionEvent){
         try{
             this.misTimbres.configurarLibres(this.radioDias);
+            new Mensaje("Los dias libres se configuraron correctamente");
         } catch (IOException | EstaDesconectado e) {
             e.printStackTrace();
         } catch (NoSeConecto noSeConecto) {
@@ -244,6 +248,7 @@ public class MainController{
     public void desactivarVacaciones(ActionEvent actionEvent){
         try{
             this.misTimbres.desactivarVacaciones();
+            new Mensaje("El modo vacaciones se desactivo correctamente");
         } catch (IOException | EstaDesconectado e) {
             e.printStackTrace();
         } catch (NoSeConecto noSeConecto) {

@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<updateDescriptor baseUrl="">
+  <entry targetMediaFileId="66" updatableVersionMin="" updatableVersionMax="" fileName="TimbreAPP_macos_1_0.dmg" newVersion="1.0" newMediaFileId="66" fileSize="4894855" md5Sum="f06c6c1f5bfd09bd8e68a4045e244f8d" bundledJre="" archive="false" singleBundle="true">
+    <comment language="es" />
+  </entry>
+</updateDescriptor>

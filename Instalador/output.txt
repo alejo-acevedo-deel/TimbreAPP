@@ -1,0 +1,3 @@
+# List of generated media files. The columns are tab-separated:
+# id | media file type | display name | media file path
+66	macos	macOS Single Bundle	/Users/alejoacevedo/Documents/Java/TimbreAPP/Instalador/TimbreAPP_macos_1_0.dmg
