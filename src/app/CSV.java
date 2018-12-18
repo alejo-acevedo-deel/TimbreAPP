@@ -92,20 +92,21 @@ public class CSV {
         this.pisarCSV();
         this.abrirLecturaCSV();
         for (HashMap<String, String> linea : aux){
-            boolean borrar = false;
+            boolean borrar = true;
             for (String key : header){
                 if(linea.get(key).compareTo(infoBorrar.get(key))==0){
-                    borrar = true;
-                    seBorro = true;
+                    borrar = borrar;
                 }else{
-                    borrar = false;
-                    seBorro = false;
+                    borrar =  false;
+                    break;
                 }
             }
-            if (borrar == false){
+            if (!borrar){
                 agregarAlCSV(linea);
+                seBorro = false;
             }else{
                 agregarAlCSV(infoModificar);
+                seBorro = true;
             }
         }
         return seBorro;
