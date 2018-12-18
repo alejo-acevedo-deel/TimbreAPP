@@ -13,15 +13,17 @@ class Timbre {
 
     private String nombre = "";
     private String ip = "";
+    private String id = "";
     private String titulo = "";
     private static int PUERTO = 35;
     private TCPClient cliente;
     private Estado estado;
 
 
-    public Timbre(String nombre, String ip) throws FaltaNombre, FaltaIP, FormatoIpErroneo {
+    public Timbre(String nombre, String ip, String id) throws FaltaNombre, FaltaIP, FormatoIpErroneo {
         this.configurarNombre(nombre);
         this.configurarIP(ip);
+        this.id = id;
         this.titulo = this.nombre + " - " + this.ip + "";
     }
 
@@ -91,6 +93,9 @@ class Timbre {
         return this.ip;
     }
 
+    public String getId() {
+        return id;
+    }
 
     public void borrarHorario(Integer indice) throws IOException, EstaDesconectado {
         this.enviar("A-/"+String.valueOf(indice));
@@ -137,7 +142,11 @@ class Timbre {
         hora = this.cliente.esperarRespuesta().split(":");
         if(hora[0].length()<2){hora[0] = "0"+hora[0];}
         if(hora[1].length()<2){hora[1] = "0"+hora[1];}
-        this.estado.setHora(hora[0] + " : " + hora[1] + " " + this.dias[Integer.valueOf(hora[2])-1]);
+        try{
+            this.estado.setHora(hora[0] + " : " + hora[1] + " " + this.dias[Integer.valueOf(hora[2])-1]);
+        }catch (ArrayIndexOutOfBoundsException e){
+            this.estado.setHora("Error de reloj");
+        }
     }
 
     private void obtenerVacaciones() throws IOException, EstaDesconectado {

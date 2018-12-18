@@ -3,6 +3,7 @@ package app;
 import Excepciones.FaltaIP;
 import Excepciones.FaltaNombre;
 import Excepciones.FormatoIpErroneo;
+import Excepciones.IpYaExiste;
 import app.Timbres.MisTimbres;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -57,6 +58,8 @@ public class ModificarTimbresController {
             new Alerta(faltaNombre);
         } catch (FormatoIpErroneo formatoIpErroneo) {
             new Alerta(formatoIpErroneo);
+        } catch (IpYaExiste ipYaExiste) {
+            new Alerta(ipYaExiste);
         }
     }
 

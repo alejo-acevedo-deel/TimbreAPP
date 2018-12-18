@@ -48,7 +48,6 @@ class TCPClient extends Thread{
 
     public String esperarRespuesta() throws IOException{
         String respuesta = fromServer.readLine();
-        System.out.println(respuesta);
         return respuesta;
     }
 }

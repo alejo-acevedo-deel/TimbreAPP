@@ -42,9 +42,9 @@ class Horario extends CheckBox{
 
     public String obtenerComoMensaje(){
         if(this.largo){
-            return this.hora+":"+this.minuto+":L:"+this.silencios;
+            return this.hora+":"+this.minuto+":L";
         }
-        return this.hora+":"+this.minuto+":C:"+this.silencios;
+        return this.hora+":"+this.minuto+":C";
     }
 
     private void configurarHora(String hora) throws FormatoHoraErroneo {

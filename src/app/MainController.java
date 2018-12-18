@@ -58,11 +58,10 @@ public class MainController{
         this.comboConfiguracion.setItems(this.misTimbres.getView());
         this.comboDias.setItems(FXCollections.observableArrayList(DIAS_SEMANA));
         this.radioDias = new LinkedList<>(Arrays.asList(radioDomingo, radioLunes, radioMartes, radioMiercoles, radioJueves, radioViernes, radioSabado));
-
         this.loadTable();
     }
 
-    public void horariosSeleccionado(Event event){
+    public void cambioDeTab(Event event){
         try{
             this.seleccionarTimbre(-1);
             this.comboMisTimbres.getSelectionModel().select(null);
@@ -127,7 +126,21 @@ public class MainController{
     }
 
     public void comboMisTimbesSeleccionado(ActionEvent actionEvent){
-        this.seleccionarTimbre(this.comboMisTimbres.getSelectionModel().getSelectedIndex());
+        try {
+            this.misTimbres.seleccionarTimbre(this.comboMisTimbres.getSelectionModel().getSelectedIndex());
+            if(this.comboMisTimbres.getSelectionModel().getSelectedIndex() != -1)
+            this.misTimbres.obtenerHorarios();
+        } catch (FormatoMinutoErroneo | EstaDesconectado | FormatoHoraErroneo | NoSeRecibioRespuesta e) {
+            e.printStackTrace();
+        } catch (NoSeConecto noSeConecto) {
+            new Alerta(noSeConecto);
+            Platform.runLater(() -> {
+                this.comboMisTimbres.getSelectionModel().select(null);
+                this.comboConfiguracion.getSelectionModel().select(null);
+            });
+        } catch (NoHayTimbreSeleccionado noHayTimbreSeleccionado) {
+            new Alerta(noHayTimbreSeleccionado);
+        }
     }
 
     public void silenciar(ActionEvent actionEvent){
@@ -164,48 +177,53 @@ public class MainController{
 
     public void chequearEstado(ActionEvent actionEvent){
         this.estadoTabla.getItems().clear();
-        Thread t = new HiloLambda(() -> {
-            try {
-                this.estadoTabla.setItems(this.misTimbres.obtenerEstados());
-            } catch (IOException | EstaDesconectado e) {
-                e.printStackTrace();
-            }
-        });
-        t.start();
-    }
-
-    /***** Metodos usados por el apartado configuracion del MainView *****/
-
-    public void configuracionSeleccionado(Event event){
-        try{
-            this.seleccionarTimbre(-1);
-            this.comboMisTimbres.getSelectionModel().select(null);
-            this.comboConfiguracion.getSelectionModel().select(null);
-        }catch (NullPointerException e){
+        try {
+            this.estadoTabla.setItems(this.misTimbres.obtenerEstados());
+        } catch (IOException e) {
             e.printStackTrace();
+        } catch (EstaDesconectado estaDesconectado) {
+            estaDesconectado.printStackTrace();
         }
     }
 
+    /***** Metodos usados por el apartado configuracion del MainView *****/
     public void comboConfiguracionSeleccionado(ActionEvent actionEvent){
-        this.seleccionarTimbre(this.comboConfiguracion.getSelectionModel().getSelectedIndex());
+        try {
+            this.misTimbres.seleccionarTimbre(this.comboConfiguracion.getSelectionModel().getSelectedIndex());
+        } catch (FormatoMinutoErroneo | EstaDesconectado | FormatoHoraErroneo | NoSeRecibioRespuesta e) {
+            e.printStackTrace();
+        } catch (NoSeConecto noSeConecto) {
+            new Alerta(noSeConecto);
+            Platform.runLater(() -> {
+                this.comboMisTimbres.getSelectionModel().select(null);
+                this.comboConfiguracion.getSelectionModel().select(null);
+            });
+        } catch (NoHayTimbreSeleccionado noHayTimbreSeleccionado) {
+            new Alerta(noHayTimbreSeleccionado);
+        }
     }
 
     public void configurarHoraAutomaticamente(ActionEvent actionEvent){
         try {
-            this.misTimbres.configurarHoraAutomaticamete();
+            LinkedList<Exception> noSeConectaron =  this.misTimbres.configurarHoraAutomaticamete();
             new Mensaje("El horario se actualizo automaticamente");
-        } catch (NoSeConecto noSeConecto) {
-            new Alerta(noSeConecto);
+            for(Exception noSeConecto : noSeConectaron){
+                new Alerta(noSeConecto);
+            }
         } catch (IOException | EstaDesconectado e) {
             e.printStackTrace();
         }
+
     }
 
     public void configurarHoraManualmente(ActionEvent actionEvent){
         try {
-            this.misTimbres.configurarHoraManualmente(this.txtHora.getText(), this.txtMinutos.getText(), this.comboDias.getSelectionModel().getSelectedIndex());
+            LinkedList<Exception> noSeConectaron = this.misTimbres.configurarHoraManualmente(this.txtHora.getText(), this.txtMinutos.getText(), this.comboDias.getSelectionModel().getSelectedIndex());
             new Mensaje("El horario se actualizo correctamente");
-        } catch (FormatoMinutoErroneo | NoSeConecto | FormatoHoraErroneo | FaltaDiaDeSemana e) {
+            for(Exception noSeConecto : noSeConectaron){
+                new Alerta(noSeConecto);
+            }
+        } catch (FormatoMinutoErroneo | FormatoHoraErroneo | FaltaDiaDeSemana e) {
             new Alerta(e);
         } catch (IOException | EstaDesconectado e) {
             e.printStackTrace();
@@ -214,9 +232,12 @@ public class MainController{
 
     public void configurarDuracion(ActionEvent actionEvent) {
         try {
-            this.misTimbres.configurarDuracion(this.txtDuracionLarga.getText(), this.txtDuracionCorta.getText());
+            LinkedList<Exception> noSeConectaron = this.misTimbres.configurarDuracion(this.txtDuracionLarga.getText(), this.txtDuracionCorta.getText());
             new Mensaje("La duracion de sonado se actualizo correctamente");
-        } catch (FormatoDeDuracionErroneo | NoSeConecto e) {
+            for(Exception noSeConecto : noSeConectaron){
+                new Alerta(noSeConecto);
+            }
+        } catch (FormatoDeDuracionErroneo e) {
             new Alerta(e);
         } catch (IOException | EstaDesconectado e) {
             e.printStackTrace();
@@ -225,8 +246,11 @@ public class MainController{
 
     public void configurarLibres(ActionEvent actionEvent){
         try{
-            this.misTimbres.configurarLibres(this.radioDias);
+            LinkedList<Exception> noSeConectaron = this.misTimbres.configurarLibres(this.radioDias);
             new Mensaje("Los dias libres se configuraron correctamente");
+            for(Exception noSeConecto : noSeConectaron){
+                new Alerta(noSeConecto);
+            }
         } catch (IOException | EstaDesconectado e) {
             e.printStackTrace();
         } catch (NoSeConecto noSeConecto) {
@@ -236,8 +260,11 @@ public class MainController{
 
     public void activarVacaciones(ActionEvent actionEvent){
         try{
-            this.misTimbres.activarVacaciones();
+            LinkedList<Exception> noSeConectaron = this.misTimbres.activarVacaciones();
             new Mensaje("El modo vacaciones se activo correctamente");
+            for(Exception noSeConecto : noSeConectaron){
+                new Alerta(noSeConecto);
+            }
         } catch (IOException | EstaDesconectado e) {
             e.printStackTrace();
         } catch (NoSeConecto noSeConecto) {
@@ -247,8 +274,11 @@ public class MainController{
 
     public void desactivarVacaciones(ActionEvent actionEvent){
         try{
-            this.misTimbres.desactivarVacaciones();
+            LinkedList<Exception> noSeConectaron = this.misTimbres.desactivarVacaciones();
             new Mensaje("El modo vacaciones se desactivo correctamente");
+            for(Exception noSeConecto : noSeConectaron){
+                new Alerta(noSeConecto);
+            }
         } catch (IOException | EstaDesconectado e) {
             e.printStackTrace();
         } catch (NoSeConecto noSeConecto) {

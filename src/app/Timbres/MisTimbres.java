@@ -3,6 +3,7 @@ package app.Timbres;
 import Excepciones.*;
 import app.CSV;
 import app.Horarios.MisHorarios;
+import app.UDPServer;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.control.RadioButton;
@@ -14,11 +15,15 @@ import java.util.*;
 public class MisTimbres extends LinkedList<Timbre>{
 
     private static final String CSV_FILE = "Timbres.csv";
-    private static final String[] CSV_HEADER = {"Nombre", "IP"};
+    private static final String[] CSV_HEADER = {"Nombre", "IP", "ID"};
+    private static final String NONE_ID = "-";
+
     private CSV csv;
     private ObservableList view = FXCollections.observableArrayList();
     private Timbre timbreSeleccionado;
     private MisHorarios misHorarios = new MisHorarios();
+    private HashMap<String, Timbre> timbresEncontrados = new HashMap();
+    private UDPServer udpServer;
 
     public MisTimbres(){
         super();
@@ -27,7 +32,8 @@ public class MisTimbres extends LinkedList<Timbre>{
             this.csv = new CSV(CSV_FILE, CSV_HEADER);
             timbresGuardados = this.csv.leerTodoElCSV();
             for(HashMap<String, String> timbre : timbresGuardados){
-                this.agregarTimbreAlInicio(timbre.get(CSV_HEADER[0]), timbre.get(CSV_HEADER[1]));
+                this.agregarTimbreAlInicio(timbre.get(CSV_HEADER[0]), timbre.get(CSV_HEADER[1]), timbre.get(CSV_HEADER[2]));
+                if(!NONE_ID.equals(timbre.get(CSV_HEADER[2]))){this.timbresEncontrados.put(timbre.get(CSV_HEADER[2]), this.get(this.size() - 1 ));}
             }
         } catch (FormatoIpErroneo formatoIpErroneo) {
             formatoIpErroneo.printStackTrace();
@@ -37,7 +43,12 @@ public class MisTimbres extends LinkedList<Timbre>{
             faltaIP.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
+        } catch (IpYaExiste ipYaExiste) {
+            ipYaExiste.printStackTrace();
         }
+        this.udpServer = new UDPServer(this);
+        this.udpServer.setDaemon(true);
+        this.udpServer.start();
     }
 
     public ObservableList getView(){
@@ -57,7 +68,6 @@ public class MisTimbres extends LinkedList<Timbre>{
         }
         super.get(indice).conectar();
         this.timbreSeleccionado = super.get(indice);
-        this.obtenerHorarios();
     }
 
     public void tranferirHorarios(LinkedList horarios) throws EstaDesconectado, EnvioDeHorariosTruncado, FormatoHoraErroneo, NoSeRecibioRespuesta, FormatoMinutoErroneo, NoHayTimbreSeleccionado {
@@ -76,9 +86,9 @@ public class MisTimbres extends LinkedList<Timbre>{
         this.misHorarios.agregarHorariosDesdeMsg(this.timbreSeleccionado.obtenerHorarios());
     }
 
-    public void agregarTimbre(String nombre, String ip) throws FaltaIP, FaltaNombre, FormatoIpErroneo {
-        this.agregarTimbreAlInicio(nombre, ip);
-        this.guardarTimbre(nombre, ip);
+    public void agregarTimbre(String nombre, String ip) throws FaltaIP, FaltaNombre, FormatoIpErroneo, IpYaExiste {
+        this.agregarTimbreAlInicio(nombre, ip, this.NONE_ID);
+        this.guardarTimbre(nombre, ip, this.NONE_ID);
     }
 
     public String obtenerNombreDel(int indice){
@@ -96,12 +106,14 @@ public class MisTimbres extends LinkedList<Timbre>{
         HashMap timbreModificar = new HashMap();
         timbreModificar.put(CSV_HEADER[0],super.get(indice).getNombre());
         timbreModificar.put(CSV_HEADER[1],super.get(indice).getIp());
+        timbreModificar.put(CSV_HEADER[2],super.get(indice).getId());
         super.get(indice).configurarNombre(nombre);
         super.get(indice).configurarIP(ip);
         this.view.set(indice, super.get(indice));
         HashMap timbreModificado = new HashMap();
         timbreModificado.put(CSV_HEADER[0],super.get(indice).getNombre());
         timbreModificado.put(CSV_HEADER[1],super.get(indice).getIp());
+        timbreModificado.put(CSV_HEADER[2],super.get(indice).getId());
         try {
             this.csv.modificarDelCSV(timbreModificar, timbreModificado);
         } catch (InformacionDifiereDeHeaderException e) {
@@ -111,25 +123,12 @@ public class MisTimbres extends LinkedList<Timbre>{
         }
     }
 
-    public void modificarNombreDel(int indice, String nombre) throws FaltaNombre {
-        if(indice<0){return;}
-        super.get(indice).configurarNombre(nombre);
-        this.view.set(indice, super.get(indice));
-
-    }
-
-    public void modificarIpDel(int indice, String ip) throws FaltaIP, FormatoIpErroneo {
-        if(indice<0){return;}
-        super.get(indice).configurarIP(ip);
-        this.view.set(indice, super.get(indice));
-    }
-
-
     public void borrar (int indice){
         if(indice<0){return;}
         HashMap timbreBorrar = new HashMap();
         timbreBorrar.put(CSV_HEADER[0],super.get(indice).getNombre());
         timbreBorrar.put(CSV_HEADER[1],super.get(indice).getIp());
+        timbreBorrar.put(CSV_HEADER[2], super.get(indice).getId());
         this.view.remove(indice);
         super.remove(indice);
         try {
@@ -164,16 +163,22 @@ public class MisTimbres extends LinkedList<Timbre>{
         return estados;
     }
 
-    private void agregarTimbreAlInicio(String nombre, String ip) throws FaltaIP, FaltaNombre, FormatoIpErroneo {
-        Timbre aux = new Timbre(nombre, ip);
+    private void agregarTimbreAlInicio(String nombre, String ip, String id) throws FaltaIP, FaltaNombre, FormatoIpErroneo, IpYaExiste {
+        for(Timbre viejos : this){
+            if(ip.equals(viejos.getIp())){
+                throw new IpYaExiste();
+            }
+        }
+        Timbre aux = new Timbre(nombre, ip, id);
         super.add(aux);
         this.view.add(aux);
     }
 
-    private void guardarTimbre(String nombre, String ip){
+    private void guardarTimbre(String nombre, String ip, String id){
         HashMap nuevoTimbre = new HashMap();
         nuevoTimbre.put(CSV_HEADER[0], nombre);
         nuevoTimbre.put(CSV_HEADER[1], ip);
+        nuevoTimbre.put(CSV_HEADER[2], id);
         try {
             this.csv.agregarAlCSV(nuevoTimbre);
         } catch (InformacionDifiereDeHeaderException e) {
@@ -183,76 +188,112 @@ public class MisTimbres extends LinkedList<Timbre>{
         }
     }
 
-    public void configurarHoraAutomaticamete() throws NoSeConecto, IOException, EstaDesconectado {
+    public LinkedList<Exception> configurarHoraAutomaticamete() throws IOException, EstaDesconectado {
+        LinkedList<Exception> exceptions = new LinkedList<>();
         try{
             timbreSeleccionado.configurarHoraAutomaticamente();
         }catch (NullPointerException e) {
             for (Timbre timbre : this) {
-                timbre.conectar();
-                timbre.configurarHoraAutomaticamente();
-                timbre.desconectar();
+                try {
+                    timbre.conectar();
+                    timbre.configurarHoraAutomaticamente();
+                    timbre.desconectar();
+                }catch (NoSeConecto noSeConecto){
+                    exceptions.add(noSeConecto);
+                }
             }
         }
+        return exceptions;
     }
 
-    public void configurarHoraManualmente(String hora, String minutos, int dia) throws FormatoMinutoErroneo, FormatoHoraErroneo, EstaDesconectado, IOException, NoSeConecto, FaltaDiaDeSemana {
+    public LinkedList<Exception> configurarHoraManualmente(String hora, String minutos, int dia) throws FormatoMinutoErroneo, FormatoHoraErroneo, EstaDesconectado, IOException, FaltaDiaDeSemana {
+        LinkedList<Exception> exceptions = new LinkedList<>();
         try {
             timbreSeleccionado.configurarHoraManualmente(hora, minutos, dia);
         }catch (NullPointerException e){
             for(Timbre timbre : this){
-                timbre.conectar();
-                timbre.configurarHoraManualmente(hora, minutos, dia);
-                timbre.desconectar();
+                try{
+                    timbre.conectar();
+                    timbre.configurarHoraManualmente(hora, minutos, dia);
+                    timbre.desconectar();
+                }catch (NoSeConecto noSeConecto){
+                    exceptions.add(noSeConecto);
+                }
             }
         }
+        return exceptions;
     }
 
-    public void configurarDuracion(String larga, String corta) throws FormatoDeDuracionErroneo, IOException, EstaDesconectado, NoSeConecto {
+    public LinkedList<Exception> configurarDuracion(String larga, String corta) throws FormatoDeDuracionErroneo, IOException, EstaDesconectado {
+        LinkedList<Exception> exceptions = new LinkedList<>();
         try {
             timbreSeleccionado.configurarDuracion(larga, corta);
         }catch (NullPointerException e){
             for(Timbre timbre : this){
-                timbre.conectar();
-                timbre.configurarDuracion(larga, corta);
-                timbre.desconectar();
+                try{
+                    timbre.conectar();
+                    timbre.configurarDuracion(larga, corta);
+                    timbre.desconectar();
+                }catch (NoSeConecto noSeConecto){
+                    exceptions.add(noSeConecto);
+                }
             }
         }
+        return exceptions;
     }
 
-    public void configurarLibres(LinkedList<RadioButton> radioDias) throws NoSeConecto, IOException, EstaDesconectado {
+    public LinkedList<Exception> configurarLibres(LinkedList<RadioButton> radioDias) throws NoSeConecto, IOException, EstaDesconectado {
+        LinkedList<Exception> exceptions = new LinkedList<>();
         try {
             timbreSeleccionado.configurarLibres(radioDias);
         }catch (NullPointerException e){
             for(Timbre timbre : this){
-                timbre.conectar();
-                timbre.configurarLibres(radioDias);
-                timbre.desconectar();
+                try {
+                    timbre.conectar();
+                    timbre.configurarLibres(radioDias);
+                    timbre.desconectar();
+                }catch (NoSeConecto noSeConecto){
+                    exceptions.add(noSeConecto);
+                }
             }
         }
+        return exceptions;
     }
 
-    public void activarVacaciones() throws IOException, EstaDesconectado, NoSeConecto {
+    public LinkedList<Exception> activarVacaciones() throws IOException, EstaDesconectado, NoSeConecto {
+        LinkedList<Exception> exceptions = new LinkedList<>();
         try {
             timbreSeleccionado.activarVacaciones();
         }catch (NullPointerException e){
             for(Timbre timbre : this){
-                timbre.conectar();
-                timbre.activarVacaciones();
-                timbre.desconectar();
+                try {
+                    timbre.conectar();
+                    timbre.activarVacaciones();
+                    timbre.desconectar();
+                }catch (NoSeConecto noSeConecto){
+                    exceptions.add(noSeConecto);
+                }
             }
         }
+        return exceptions;
     }
 
-    public void desactivarVacaciones() throws IOException, EstaDesconectado, NoSeConecto {
+    public LinkedList<Exception> desactivarVacaciones() throws IOException, EstaDesconectado, NoSeConecto {
+        LinkedList<Exception> exceptions = new LinkedList<>();
         try {
             timbreSeleccionado.desactivarVacaciones();
         }catch (NullPointerException e){
             for(Timbre timbre : this){
-                timbre.conectar();
-                timbre.desactivarVacaciones();
-                timbre.desconectar();
+                try {
+                    timbre.conectar();
+                    timbre.desactivarVacaciones();
+                    timbre.desconectar();
+                }catch (NoSeConecto noSeConecto){
+                    exceptions.add(noSeConecto);
+                }
             }
         }
+        return exceptions;
     }
 
     public void silenciar() throws IOException, EstaDesconectado, FormatoMinutoErroneo, NoSeRecibioRespuesta, FormatoHoraErroneo, NoHayTimbreSeleccionado {
@@ -276,5 +317,21 @@ public class MisTimbres extends LinkedList<Timbre>{
             this.timbreSeleccionado.silenciar(0);
         }
         this.obtenerHorarios();
+    }
+
+    public void sePublicoTimbre(String id, String ip){
+        if(timbresEncontrados.containsKey(id)){
+            try {
+                timbresEncontrados.get(id).configurarIP(ip);
+                return;
+            } catch (FaltaIP | FormatoIpErroneo faltaIP) {
+            }
+        }
+        try {
+            this.agregarTimbreAlInicio("Timbre " + String.valueOf(this.size()), ip, id);
+        } catch (FaltaIP | FaltaNombre | FormatoIpErroneo | IpYaExiste faltaIP) {
+        }
+        this.timbresEncontrados.put(id, this.get(this.size() - 1));
+        this.guardarTimbre("Timbre " + String.valueOf(this.size()), ip, id);
     }
 }
